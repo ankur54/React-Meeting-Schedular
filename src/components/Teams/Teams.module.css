@@ -1,0 +1,66 @@
+.teams-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5vw;
+    
+    /* min-height: 100vh; */
+    padding: 3em 4em;
+    background-color: rgba(238, 238, 238, 0.74);
+}
+
+.create-team {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em 2em;
+    font-family: 'Roboto', sans-serif;
+}
+
+.create-team button {
+    font-size: 1.3em;
+    padding: 0.3em;
+    border-radius: 5px;
+    color: rgb(53, 136, 110);
+    border: 1px solid rgb(60, 134, 110);
+}
+
+.create-team button:hover {
+    cursor: pointer;
+    background-color: rgb(53, 136, 110);
+    color: white;
+}
+
+#create-team-title {
+    flex-basis: 100%;
+    padding: 0.5em 1em;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 5px;
+    border-bottom: 2px solid #bbb;
+}
+
+#create-team-title::placeholder,
+#create-team-description::placeholder {
+    opacity: 0.4;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 0.16em;
+}
+
+#create-team-description {
+    flex-basis: 100%;
+    padding: 0.5em 1em;
+    border: none;
+    border-bottom: 2px solid #bbb;
+    border-radius: 5px;
+}
+
+#select-team-member {
+    border: none;
+    padding: 0.3em 1em;
+    border-radius: 3px;
+    border-bottom: 1px solid #aaa;
+    font-family: 'Roboto', sans-serif;
+}
+
+#select-team-member:focus {
+    outline: none;
+}

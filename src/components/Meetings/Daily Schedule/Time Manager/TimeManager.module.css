@@ -1,0 +1,10 @@
+.schedule-display {
+    display: flex;
+    flex-direction: column;
+    height: 75vh;
+ 
+    position: relative;
+    padding: 2em;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

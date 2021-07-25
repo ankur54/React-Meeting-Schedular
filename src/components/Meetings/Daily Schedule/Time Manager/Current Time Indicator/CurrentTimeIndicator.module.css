@@ -1,0 +1,27 @@
+.curr-time {
+    position: absolute;
+    display: none;
+    width: 4em;
+    height: min-content;
+    left: -0.5em;
+    color: red;
+    z-index: 2;
+    font-family: 'Quicksand', sans-serif;
+    background-color: white;
+
+}
+
+.curr-time.active {
+    display: inline;
+}
+
+.curr-time::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    background: red;
+    height: 2px;
+    width: 50vw;
+    top: 10px;
+    left: 4.5em;
+}

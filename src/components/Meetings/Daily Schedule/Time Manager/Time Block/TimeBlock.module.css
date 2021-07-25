@@ -1,0 +1,22 @@
+.schedule-time {
+    position: relative;
+    flex-basis: 5em;
+    flex-shrink: 0;
+}
+
+.time-start {
+    position: relative;
+    color: #6b6b6b;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.time-start::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    background: rgb(209, 209, 209, 0.3);
+    height: 2px;
+    width: 90%;
+    top: 0.65em;
+    left: 3em;
+}

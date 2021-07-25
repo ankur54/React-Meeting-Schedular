@@ -1,0 +1,201 @@
+.calendar {
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+    width: 100%;
+    height: max-content;
+    padding: 1em;
+
+    z-index: 2;
+    background-color: rgb(190, 190, 190);
+    border-radius: 10px;
+    border: 1px solid rgb(255, 255, 255, 0.5);
+    border-bottom: 2px solid rgb(255, 255, 255, 0.2);
+    border-right: 2px solid rgb(255, 255, 255, 0.2);
+}
+
+.calendar-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.5em;
+
+    padding: 1.5em;
+}
+
+#filter-start-time,
+#filter-end-time {
+    padding: 5px 0.5em;
+    border: 1px solid rgb(255, 255, 255, 0.35);
+    border-radius: 3px;
+    color: rgb(0, 0, 0, 0.5);
+    font-family: 'Quicksand', sans-serif;
+}
+
+.calendar-header > input {
+    background-color: transparent;
+}
+
+.calendar-header > * {
+    margin: 0 auto;
+    border: none;
+}
+
+.year-selector {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+
+.prev-year, 
+.next-year {
+    color:rgba(0, 0, 0, 0.35);
+    border-radius: 50%;
+    border: 1px solid rgb(0, 0, 0, 0.35);
+    z-index: -1;
+}
+
+.prev-year:hover, 
+.next-year:hover {
+    background: rgba(0, 0, 0, 0.35);
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+.prev-year {
+    transform: rotateZ(180deg);
+}
+
+.year {
+    color: rgb(145, 116, 83);
+    font-size: 1.5em;
+    font-weight: 900;
+    font-family: 'Abril Fatface', cursive;
+}
+
+.month-selector {
+    padding: 0.3em 1.25em;
+    border-radius: 5px;
+    font-size: 1.5em;
+    font-family: 'Abril Fatface', cursive;
+    color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.month-selector:hover {
+    color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.calendar-body {
+    padding: 1vw;
+    max-width: 27em;
+    height: 35%;
+    margin: 0 auto;
+}
+
+.calendar-week-day {
+    display: flex;
+    justify-content: space-around;
+    gap: 0.3em;
+}
+
+.week-day {
+    flex-basis: calc(100% / 7);
+    text-align: center;
+    padding: 0.5vw 0;
+    margin: 0.5em 0;
+
+    font-size: 1.17em;
+    font-family: 'Abril Fatface', cursive;
+    color: rgb(179, 143, 101);
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.calendar-days {
+    display: flex;
+    flex-wrap: wrap;
+
+    height: 100%;
+}
+
+.days-number {
+    flex-basis: calc(100% / 7);
+    padding: 0.75vw 0.5vw;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 400;
+    font-family: 'Quicksand', sans-serif;
+    color:rgb(104, 104, 104);
+}
+
+.days-number.show {
+    border: 1px solid rgb(255, 255, 255, 0.25);
+}
+
+.days-number.show:hover {
+    cursor: pointer;
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(179, 143, 101);
+}
+
+.days-number.show.active {
+    border: 3px solid rgb(179, 143, 101);
+}
+
+.curr-date {
+    padding: 0.65em 0;
+    color:rgb(190, 201, 177);
+    background-color:cadetblue ;
+}
+
+.month-list {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    padding: 1.5em;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-content: stretch;
+
+    font-family: 'Roboto', sans-serif;
+    transform: scale(1.5);
+    visibility: hidden;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.month-list.show {
+    transform: scale(1);
+    visibility: visible;
+    pointer-events: visible;
+    background-color: rgb(177, 177, 177);
+}
+
+.month-block {
+    flex-grow: 1;
+    flex-basis: calc(100% / 3);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color:rgb(124, 99, 66);
+    font-size: 1.2em;
+    border: 1px solid rgb(255, 255, 255, 0.25);
+}
+
+.month-block:hover {
+    background-color: rgb(124, 99, 66);
+    color: rgb(185, 185, 185);
+    cursor: pointer;
+}

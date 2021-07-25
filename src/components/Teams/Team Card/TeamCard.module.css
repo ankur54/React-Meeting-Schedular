@@ -1,0 +1,113 @@
+.team-card {
+    display: flex;
+    flex-basis: calc(100% / 4);
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+
+    padding: 3em 2em;
+    color: rgba(0,0,0,0.5);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0.3em 1em rgba(0, 0, 0, 0.2);
+    border-radius: 0.5em;
+    font-family: 'Roboto', sans-serif;
+}
+
+.team-card *::after, *::before {
+    display: none;
+}
+
+.team-card__title {
+    color: cornflowerblue;
+    font-size: 2em;
+    font-family: 'Playfair Display', serif;
+}
+
+.team-card__description {
+    flex-basis: 90%;
+    line-height: 1.5em;
+}
+
+.add-team-member,
+.remove-team-member {
+    cursor: pointer;
+    border: none;
+    border-radius: 0.4em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.team-card__btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.add-team-member {
+    align-items: flex-start;
+    flex-basis: 40%;
+    padding: 0.5rem 1rem;
+
+    border: 2px solid rgb(76, 146, 125);
+    color: rgb(129, 184, 167);
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.add-team-member:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgb(76, 146, 125);
+}
+
+.remove-team-member {
+    width: 50%;
+    padding: 0.3rem 0.5rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    border: 2px solid rgb(231, 132, 132);
+    background-color: rgb(231, 132, 132);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.remove-team-member:hover {
+    color: rgb(231, 132, 132);
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.team-members {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-around;
+    gap: 0.3em;
+}
+
+.team-member {
+    flex-basis: 40%;
+    padding: 0.2em;
+
+    display: none;
+    text-align: center;
+    border-radius: 0.5em;
+    color: rgb(59, 81, 122);
+    background-color: rgba(100, 148, 237, 0.342);
+    border: 1px solid cornflowerblue;
+}
+
+.team-member.show {
+    display: inline-block;
+}
+
+.rem {
+    display: flex;
+    align-items: center;
+    padding: 0em 0.35em;
+    margin-left: 0.75em;
+    text-align: center;
+    color: #666;
+    border-radius: 50%;
+    box-shadow: 1px 0 0.3em #c4c4c4;
+}
+
+.rem:hover {
+    background-color: #666;
+    color: white;
+    cursor: pointer;
+}

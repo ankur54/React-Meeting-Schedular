@@ -1,0 +1,38 @@
+.daily-schedule {
+    flex-grow: 1;
+    height: calc(100vh - 3em);
+    padding: 2em 1em;
+}
+
+.daily-schedule > h2, h3 {
+    padding: 0 3rem;
+    margin-bottom: 0.75em;
+    color: #6b6b6b;
+}
+
+.daily-schedule > h2 {
+    font-size: 2.25em;
+    letter-spacing: 0.2em;
+    font-family: 'Abril Fatface', cursive;
+}
+
+.daily-schedule > h3 {
+    font-size: 1.5em;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+}
+
+.meeting-range {
+    position: absolute;
+    left: 6em;
+    height: 10em;
+    width: 65%;
+    border-radius: 0.5em;
+    cursor: pointer;
+    background-color: rgb(196, 159, 159, 0.3);
+}
+
+.chosen-select {
+    height: 1.2em
+}

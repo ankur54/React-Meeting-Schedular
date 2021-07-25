@@ -1,0 +1,13 @@
+.add-meeting {
+    color: rgb(109, 109, 109);
+    transition: transform 250ms ease-in-out !important;
+}
+
+.add-meeting.active {
+    transform: rotateZ(45deg);
+}
+
+.add-meeting:hover {
+    fill: rgb(58, 58, 58);
+    cursor: pointer;
+}

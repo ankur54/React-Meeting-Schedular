@@ -1,0 +1,17 @@
+.meeting-range {
+    position: absolute;
+    left: 6em;
+    width: 65%;
+    z-index: 0;
+    border-radius: 0.5em;
+    cursor: pointer;
+    background-color: rgb(196, 159, 159, 0.3);
+}
+
+.meeting-title {
+    padding: 1% 3%;
+}
+
+.meeting-range > *::after, *::before {
+    display: none;
+}
