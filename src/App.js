@@ -6,18 +6,49 @@ import Teams from './components/Teams/Teams';
 
 function App() {
   const [addMeetingClicked, setAddMeetingClicked] = useState(false)
-  const onAddMeetingClick = e => {
-    setAddMeetingClicked(prev => prev = !prev);
+  const [addTeamClicked, setAddTeamClicked] = useState(false)
+  const [tab, setTab] = useState('meeting')
+  
+  const onAddMeetingClick = () => {
+    setAddMeetingClicked(prev => !prev);
   }
+  const onAddTeamClick = () => {
+    setAddTeamClicked(prev => !prev);
+  }
+  const onChangeTab = tab => {
+    setTab(tab)
+  }
+
+  const onClickHandler = (
+    tab === 'meeting' ? 
+    onAddMeetingClick :
+    onAddTeamClick
+  )
+
+  const clickState = (
+    tab === 'meeting' ?
+    addMeetingClicked :
+    addTeamClicked
+  )
+
+  const content = (
+    tab === 'meeting' ? 
+    <Meetings displayForm={addMeetingClicked}/> :
+    <Teams 
+        showModal={addTeamClicked}
+        onToggleModal={onAddTeamClick}
+    />
+  )
 
   return (
     <Fragment>
-      <Header onAddMeetingClick={onAddMeetingClick}/>
-      {/* <Meetings displayForm={addMeetingClicked}/> */}
-      <Teams 
-        showModal={addMeetingClicked}
-        onToggleModal={onAddMeetingClick}
+      <Header 
+        clicked={clickState}
+        onClickHandler={onClickHandler}
+        onChangeTab={onChangeTab}
+        currTab={tab}
       />
+      { content }
     </Fragment>
   );
 }

@@ -1,16 +1,41 @@
 import classes from './Header.module.css';
 import Search from '../../UI/Search/Search';
 import AddButton from '../../UI/Add Button/Add-Button';
+import { useState } from 'react';
 
-const Header = ({ onAddMeetingClick }) => {
+const Header = props => {
+    const { 
+        clicked,
+        onClickHandler, 
+        onChangeTab, 
+        currTab 
+    } = props
+    
+    const meetingSearch = <Search />
+
+    const tabChangeHandler = tabName => {
+        onChangeTab(tabName)
+    }
+
     return (
         <header>
-            <AddButton onAddMeetingClick={onAddMeetingClick}/>
+            <AddButton 
+                clicked={clicked}
+                onClick={onClickHandler}
+            />
             <nav>
-                <a href="meetings.html" className={classes["active"]}>Meeting</a>
-                <a href="teams.html">Teams</a>
+                <div 
+                    className={`${classes.tab} ${(currTab === 'meeting') && classes['active']}`}
+                    onClick={tabChangeHandler.bind(this, 'meeting')}
+                >Meeting
+                </div>
+                <div 
+                    className={`${classes.tab} ${(currTab === 'team') && classes['active']}`}
+                    onClick={tabChangeHandler.bind(this, 'team')}
+                >Teams
+                </div>
             </nav>
-            <Search />
+            { meetingSearch }
         </header>
     )
 }
