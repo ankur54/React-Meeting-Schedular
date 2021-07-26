@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
-import AuthForm from '../UI/Auth Form Container/AuthForm'
+import AuthForm from '../../UI/Auth Form Container/AuthForm'
 
 const AuthFormConfig = () => {
     const dispatch = useDispatch()

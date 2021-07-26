@@ -1,4 +1,5 @@
 .search-bar {
+    width: 100%;
     display: flex;
     gap: 0.75em;
     position: relative;
@@ -6,7 +7,7 @@
     
     overflow: hidden;
     border-radius: 20px;
-    border: 1.5px solid rgba(109, 109, 109);
+    border: 1.5px solid rgb(160, 160, 160);
     background-color: white;
     transition: width 450ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
@@ -20,15 +21,15 @@
     outline: none;
     border: none;
     width: 100%;
-    font-size: 0.8em;
+    font-size: 1.5em;
     font-family: 'Montserrat', sans-serif;
     border-radius: 20px;
     background-color: transparent;
 }
 
 .search-bar__input::placeholder {
-    opacity: 0.8;
-    font-size: 0.95em;
+    opacity: 0.5;
+    font-size: 0.75em;
     font-family: 'Montserrat', sans-serif;
 }
 

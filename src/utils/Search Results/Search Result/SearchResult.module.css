@@ -1,0 +1,66 @@
+p::after, p::before {
+    display: none;
+}
+
+.month-name,
+.date,
+.meeting-title {
+    padding: 0;
+    margin: 0;
+}
+
+.search-result-container {
+    display: flex;
+    cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
+    transition: transform 150ms ease-out;
+}
+
+.search-result-container:hover {
+    transform: scale(1.25);
+    box-shadow: 0 5px 1em rgba(0, 0, 0, 0.5);
+}
+
+.search-result-container:hover .meeting-info {
+    background-color: white;
+}
+
+.meeting-date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25em;
+
+    padding: 0.5em 1em;
+    color: #f0cc69;
+    background-color: rgb(225, 225, 225, 0.35);
+    border-radius: 0.5em 0 0 0.5em;
+    border: 1px solid #cfcfcf;
+}
+
+.meeting-date > h3 {
+    font-size: 1.5em;
+    color: #efefef;
+}
+
+.meeting-info {
+    padding: 0.5em 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25em;
+    flex-grow: 1;
+    background-color: #efefef;
+    border-left: 0.35em solid #6a94e2;
+    /* border-radius: 0 0.5em 0.5em 0; */
+}
+
+.meeting-info > * {
+    text-align: left;
+}
+
+.timing {
+    opacity: 0.5;
+    letter-spacing: 0.1em;
+}

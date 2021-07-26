@@ -7,9 +7,10 @@ import Header from './components/Header/Header';
 import Meetings from './components/Meetings/Meetings';
 import Teams from './components/Teams/Teams';
 
-import AuthFormConfig from './utils/AuthForm';
 import Modal from './UI/Modal Container/Modal';
 import Search from './UI/Search/Search';
+import AuthFormConfig from './utils/Auth Form/AuthForm';
+import SearchResults from './utils/Search Results/SearchResults';
 
 
 function App() {
@@ -17,8 +18,12 @@ function App() {
   const [addTeamClicked, setAddTeamClicked] = useState(false)
   const [searchClicked, setSearchClicked] = useState(false)
   const [tab, setTab] = useState('meeting')
+  const [meetingsList, setMeetingsList] = useState([])
 
-  const isAuthenticated = !!useSelector(state => state.token)
+  const token = useSelector(state => state.token)
+  const isAuthenticated = !!token
+
+  console.log(meetingsList)
 
   const onAddMeetingClick = () => {
     setAddMeetingClicked(prev => !prev);
@@ -31,6 +36,26 @@ function App() {
   }
   const onChangeTab = tab => {
     setTab(tab)
+  }
+  const getSearchResults = async input => {
+    try {
+      console.log(input)
+      const response = await fetch(`http://localhost:8000/meeting/filter?phrase=${input}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      if (response.status != 200) {
+        throw new Error (response.error)
+      }
+      
+      const meetings = await response.json()
+      setMeetingsList(meetings)
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
 
 
@@ -52,13 +77,8 @@ function App() {
         showModal={searchClicked}
         onToggleModal={onSearchClicked}
       >
-        <div>
-          <div><Search/></div>
-          <div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
+        <Search onClickHandler={getSearchResults}/>
+        <SearchResults searchResults={meetingsList}/>
       </Modal>
       <Header 
         addClicked={clickState}
