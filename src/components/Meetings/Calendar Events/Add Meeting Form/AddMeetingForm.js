@@ -3,7 +3,6 @@ import classes from './AddMeetingForm.module.css';
 
 const AddMeetingForm = ({ displayForm }) => {
     const [render, setRender] = useState(displayForm)
-    console.log(render, displayForm)
     
     useEffect(() => {
         if (displayForm) setRender(prev => prev = true)

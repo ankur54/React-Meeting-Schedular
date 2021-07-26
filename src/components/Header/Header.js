@@ -1,17 +1,18 @@
 import classes from './Header.module.css';
 import Search from '../../UI/Search/Search';
 import AddButton from '../../UI/Add Button/Add-Button';
+import { SearchRounded } from '@material-ui/icons';
+
 import { useState } from 'react';
 
 const Header = props => {
     const { 
-        clicked,
+        addClicked,
+        searchClickedHandler,
         onClickHandler, 
         onChangeTab, 
         currTab 
     } = props
-    
-    const meetingSearch = <Search />
 
     const tabChangeHandler = tabName => {
         onChangeTab(tabName)
@@ -20,7 +21,7 @@ const Header = props => {
     return (
         <header>
             <AddButton 
-                clicked={clicked}
+                clicked={addClicked}
                 onClick={onClickHandler}
             />
             <nav>
@@ -35,7 +36,11 @@ const Header = props => {
                 >Teams
                 </div>
             </nav>
-            { meetingSearch }
+            <button 
+                className={classes['search-btn']}
+                onClick={searchClickedHandler}
+            ><SearchRounded fontSize='small'/>
+            </button>
         </header>
     )
 }
