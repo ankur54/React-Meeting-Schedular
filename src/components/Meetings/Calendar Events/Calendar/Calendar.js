@@ -51,7 +51,7 @@ const Calendar = props => {
         const date = e.target.innerText
         const day = new Date(year, month, date).getDay()
 
-        setDateClicked(prev => prev = `${year}-${month}-${date}-${day}`)
+        setDateClicked(`${year}-${month}-${date}-${day}`)
         changeDateHandler(`${year} ${monthNames[month]} ${date} ${dayNames[day]}`)
     }
 

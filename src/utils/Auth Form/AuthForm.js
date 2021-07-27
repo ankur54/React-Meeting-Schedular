@@ -37,14 +37,17 @@ const AuthFormConfig = () => {
             
             // if everything goes well store token and userId in redux
             response = await response.json()
-            const { token, userId } = response
+            const { token, userId, userName, userEmail } = response
             dispatch({
                 type: 'login',
                 payload: {
                     token,
-                    userId
+                    userId,
+                    userName,
+                    userEmail
                 }
             })
+            setTimeout(() => { dispatch({ type: 'logout' }) }, 60 * 60 * 1000);
             history.replace('/')
         }
         catch (err) {
@@ -62,7 +65,6 @@ const AuthFormConfig = () => {
                     name,
                     email,
                     password,
-                    department
                 }),
                 headers: {
                     'Content-Type': 'application/json'
@@ -70,7 +72,7 @@ const AuthFormConfig = () => {
             })
 
             // throw error if something goes wrong in the backend
-            if (response.error) {
+            if (response.status === 400) {
                 throw new Error(response.error)
             }
             
@@ -102,8 +104,10 @@ const AuthFormConfig = () => {
     const config = [
         { 
             title: 'Login',
+            heading: 'Lets get the day organised and dusted!',
             right: {
-                image: `${process.env.PUBLIC_URL}/images/amico.png`
+                image: `${process.env.PUBLIC_URL}/images/login.png`,
+                heading: 'Schedule your day & get a step closer to your pajamas!'
             },
             left: {
                 inputList: [
@@ -125,12 +129,16 @@ const AuthFormConfig = () => {
                     }
                 ]
             },
+            hyue: '#F1CCD9',
+            next: 'Don\'t have an accout yet?',
             submitHandler: onLoginHandler
         },
         { 
             title: 'Signup',
+            heading: 'Send your productivity of the roof! Signup and get started',
             right: {
-                image: `${process.env.PUBLIC_URL}/images/cuate.png`
+                image: `${process.env.PUBLIC_URL}/images/signup.png`,
+                heading: 'Schedule your day and get a step closer to your pajamas!'
             },
             left: {
                 inputList: [
@@ -157,25 +165,11 @@ const AuthFormConfig = () => {
                         onChangeHandler: onPasswordChange,
                         value: password,
                         required: true
-                    },
-                    {
-                        type: 'password',
-                        name: 'userConfirmPassword',
-                        placeholder: 'Re-enter the password for confirmation',
-                        onChangeHandler: onConfirmPassChange,
-                        value: confirmPass,
-                        required: true
-                    },
-                    {
-                        type: 'text',
-                        name: 'userDepartment',
-                        placeholder: 'Enter your department name',
-                        onChangeHandler: onDepartmentChange,
-                        value: department,
-                        required: false
                     }
                 ]
             },
+            hyue: '#F4D38A',
+            next: 'Already have an account?',
             submitHandler: onSignupHandler
         },
     ]

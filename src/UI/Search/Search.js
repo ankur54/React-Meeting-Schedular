@@ -12,10 +12,10 @@ const Search = props => {
             <input 
                 ref={searchInput}
                 className={classes['search-bar__input']}
-                placeholder='Enter the meeting description'
+                placeholder='Enter the description u want to search for'
             />
             <button 
-                onClick={onClickHandler.bind(this, searchInput.current.value)}
+                onClick={() => onClickHandler(searchInput.current.value)}
                 className={classes['search-bar__submit']}
             ><SearchIcon fontSize='small'/>    
             </button>

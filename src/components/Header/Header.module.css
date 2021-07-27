@@ -36,14 +36,16 @@ nav {
 }
 
 .search-btn {
-    padding: 0 0.15em;
+    display: inline;
+    color: rgb(77, 77, 77);
     border-radius: 50%;
-    color: gray;
-    border: 1px solid gray;
+    padding: 0.075em 0.18em;
+    background-color: #dfdfdf;
+    transition: all 100ms linear;
 }
 
 .search-btn:hover {
-    background-color: gray;
+    background-color: rgb(161, 161, 161);
     color: #dfdfdf;
     cursor: pointer;
 }

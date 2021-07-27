@@ -1,0 +1,46 @@
+.user {
+    position: relative;
+    padding: 0.1em 0.18em;
+    margin-left: 1em;
+
+    color: #dfdfdf;
+    background-color: #888;
+    border-radius: 100%;
+}
+
+.user:hover {
+    cursor: pointer;
+}
+
+.user-context-menu {
+    position: absolute;
+    bottom: -11em;
+    left: -15em;
+    display: none;
+    flex-direction: column;
+    background-color: #dfdfdf;
+    z-index: 100;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.user-context-menu.show {
+    display: flex;
+    padding: 1em;
+}
+
+.context-menu__item {
+    padding: 1em;
+    text-align: center;
+    color: #777;
+    border-radius: 5px;
+}
+
+.context-menu__item:hover {
+    background-color: #777;
+    color: #dfdfdf;
+}
+
+.logout:hover {
+    cursor: pointer;
+}

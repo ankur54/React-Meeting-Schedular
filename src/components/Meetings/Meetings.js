@@ -11,6 +11,8 @@ const Meetings = props => {
     const changeEventClickedHandler = () => { setEventClicked(prev => !prev) }
     const { displayForm } = props
 
+    console.log(date)
+    
     return (
         <main>
             <Schedule 

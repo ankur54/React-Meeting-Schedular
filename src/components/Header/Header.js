@@ -1,9 +1,11 @@
 import classes from './Header.module.css';
 import Search from '../../UI/Search/Search';
 import AddButton from '../../UI/Add Button/Add-Button';
+import UserAccount from '../../UI/User Icon/User';
 import { SearchRounded } from '@material-ui/icons';
 
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const Header = props => {
     const { 
@@ -13,6 +15,13 @@ const Header = props => {
         onChangeTab, 
         currTab 
     } = props
+
+    const user = useSelector(state => {
+        return {
+            name: state.userName,
+            email: state.userEmail
+        }
+    })
 
     const tabChangeHandler = tabName => {
         onChangeTab(tabName)
@@ -41,6 +50,9 @@ const Header = props => {
                 onClick={searchClickedHandler}
             ><SearchRounded fontSize='small'/>
             </button>
+            <UserAccount
+                userDetails={user}
+            />
         </header>
     )
 }
