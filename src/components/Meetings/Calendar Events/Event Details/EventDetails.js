@@ -6,12 +6,12 @@ const EventDetails = ({ displayEventDetails }) => {
     const [render, setRender] = useState(displayEventDetails)
     useEffect(() => {
         if (displayEventDetails)
-            setRender(prev => prev = true)
+            setRender(true)
     }, [displayEventDetails])
 
     const onUnmount = () => {
         if (!displayEventDetails) 
-            setRender(prev => prev = false)
+            setRender(false)
     }
 
     return render && (

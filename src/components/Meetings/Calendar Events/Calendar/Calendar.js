@@ -11,15 +11,14 @@ const Calendar = props => {
     const [startTime, setStartTime] = useState('00:00')
     const [endTime, setEndTime] = useState('23:59')
     const [showMonthSelector, setShowMonthSelector] = useState(false)
-    const [dateClicked, setDateClicked] = useState(0)
+    const [dateClicked, setDateClicked] = useState(new Date().getDate())
 
     const { changeDateHandler } = props
 
     useEffect(() => {
-        const date = (dateClicked == 0 ? new Date().getDate() : dateClicked)
-        const day = new Date(year, month, date).getDay()
-        setDateClicked(`${year}-${month}-${date}-${day}`)
-        changeDateHandler(`${year} ${monthNames[month]} ${date} ${dayNames[day]}`)
+        const day = new Date(year, month, dateClicked).getDay()
+        console.log(year, month, dateClicked, day)
+        changeDateHandler(year, month, dateClicked, day)
     }, [])
 
     const changeMonthHandler = monthIdx => {
@@ -47,12 +46,11 @@ const Calendar = props => {
         setEndTime(prevEndTime => prevEndTime = e.target.value)
     }
 
-    const dateClickHandler = e => {
-        const date = e.target.innerText
-        const day = new Date(year, month, date).getDay()
+    const dateClickHandler = dayNumber => {
+        const day = new Date(year, month, dayNumber).getDay()
 
-        setDateClicked(`${year}-${month}-${date}-${day}`)
-        changeDateHandler(`${year} ${monthNames[month]} ${date} ${dayNames[day]}`)
+        setDateClicked(dayNumber)
+        changeDateHandler(year, month, dayNumber, day)
     }
 
     const isLeapYear = (year) => {
@@ -92,7 +90,7 @@ const Calendar = props => {
                                 ${classes.show} 
                                 ${isCurrDate && classes['curr-date']} 
                                 ${(fullDate.localeCompare(dateClicked) === 0) && !isCurrDate && classes.active}`}
-                    onClick={dateClickHandler}
+                    onClick={dateClickHandler.bind(this, dayNumber)}
                     >{dayNumber}
                     </div>
                 )

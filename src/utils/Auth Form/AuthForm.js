@@ -11,8 +11,6 @@ const AuthFormConfig = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [confirmPass, setConfirmPass] = useState('')
-    const [department, setDepartment] = useState('')
 
     const onLoginHandler = async e => {
         try {
@@ -47,7 +45,9 @@ const AuthFormConfig = () => {
                     userEmail
                 }
             })
-            setTimeout(() => { dispatch({ type: 'logout' }) }, 60 * 60 * 1000);
+            setTimeout(() => { 
+                dispatch({ type: 'logout' })
+            }, 60 * 60 * 1000);
             history.replace('/')
         }
         catch (err) {
@@ -91,12 +91,6 @@ const AuthFormConfig = () => {
     }
     const onPasswordChange = e => {
         setPassword(e.target.value)
-    }
-    const onConfirmPassChange = e => {
-        setConfirmPass(e.target.value)
-    }
-    const onDepartmentChange = e => {
-        setDepartment(e.target.value)
     }
 
 

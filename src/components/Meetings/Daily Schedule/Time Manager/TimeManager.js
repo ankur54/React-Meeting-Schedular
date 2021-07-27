@@ -4,41 +4,39 @@ import TimeBlock from "./Time Block/TimeBlock";
 import CurrentTimeIndicator from './Current Time Indicator/CurrentTimeIndicator';
 import MeetingBlock from './Meeting Block/MeetingBlock';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const TimeManager = props => {
-    const { onEventClick } = props
+    const { 
+        onEventClick, 
+        date 
+    } = props
     const [currHr, setCurrHr] = useState(new Date().getHours())
-    let interval = null;
-    const meetings = [
-        {
-            _id: "60f7bf0af05efa0ab505878c",
-            title: "Meeting 1",
-            description: "My meeting",
-            startTime: "16:00",
-            endTime: "16:20"
-        },
-        {
-            _id: "60f7c0a38aaf7e0b82398ca5",
-            title: "Meeting 2",
-            description: "My meeting",
-            startTime: "16:30",
-            endTime: "16:45"
-        },
-        {
-            _id: "60f82b9d0465fd1e812d7f31",
-            title: "Meeting 3",
-            description: "My meeting",
-            startTime: "18:00",
-            endTime: "18:50"
-        },
-        {
-            _id: "60f7bf0af05efa0ab505878d",
-            title: "Meeting 4",
-            description: "Valorant meeting to play games with friends",
-            startTime: "20:00",
-            endTime: "22:30"
+    const [meetings, setMeetings] = useState([])
+    
+    const token = useSelector(state => state.token)
+    const startTime = '00:00'
+    const endTime = '23:59'
+
+    useEffect(async () => {
+        try {
+            let response = await fetch(
+                `http://localhost:8000/meeting?date=${date}&startTime=${startTime}&endTime=${endTime}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            response = await response.json()
+            if (response.error) throw new Error(response.error)
+            setMeetings(response)
         }
-    ]
+        catch (error) {
+            console.log(error.message)
+        }
+    }, [])
+
+    let interval = null;
 
     // update hour every 60 * 60 * 1000 ms interval
     useEffect(() => {

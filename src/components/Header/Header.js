@@ -4,7 +4,6 @@ import AddButton from '../../UI/Add Button/Add-Button';
 import UserAccount from '../../UI/User Icon/User';
 import { SearchRounded } from '@material-ui/icons';
 
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const Header = props => {

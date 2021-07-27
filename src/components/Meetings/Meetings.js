@@ -6,12 +6,18 @@ import { useState } from 'react';
 
 const Meetings = props => {
     const [eventClicked, setEventClicked] = useState(false)
-    const [date, setDate] = useState('')
+    const [date, setDate] = useState({
+        year: new Date().getFullYear(),
+        month: new Date().getMonth(),
+        dateNum: new Date().getDate(),
+        day: new Date().getDay()
+    })
 
     const changeEventClickedHandler = () => { setEventClicked(prev => !prev) }
+    const changeDateHandler = (year, month, dateNum, day) => {
+        setDate({year, month, dateNum, day})
+    }
     const { displayForm } = props
-
-    console.log(date)
     
     return (
         <main>
@@ -22,7 +28,7 @@ const Meetings = props => {
             <CalendarEvents 
                 displayForm={displayForm}
                 displayEventDetails={eventClicked}
-                setDateHandler={setDate}
+                setDateHandler={changeDateHandler}
             />
         </main>
     )
