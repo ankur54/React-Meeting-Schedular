@@ -21,7 +21,7 @@ const AuthForm = props => {
   
         var usePound = false;
       
-        if (col[0] == "#") {
+        if (col[0] === "#") {
             col = col.slice(1);
             usePound = true;
         }
@@ -76,10 +76,12 @@ const AuthForm = props => {
     const pages = sections.map(page => {
         const form = (
             page.left.inputList.map(input => (
-                <fieldset className={classes['auth-fieldset']}>
+                <fieldset 
+                    key={`${page.title}-${input.name}`}
+                    className={classes['auth-fieldset']}
+                >
                     <label htmlFor={input.name}>{input.label}</label>
                     <input 
-                        key={input.name}
                         required={input.required}
                         type={input.type}
                         name={input.name}
@@ -93,13 +95,17 @@ const AuthForm = props => {
             ))
         )
 
-        const darkHyue = LightenDarkenColor(page.hyue, -100)
+        const darkHyue = LightenDarkenColor(page.hyue, -150)
+        const lightHyue = LightenDarkenColor(page.hyue, 30)
 
         return (
             <Fragment key={page.title}>
                 <div className={classes['left-panel']}>
                     <div className={classes['left-panel__header']}>
-                        <h2 className={classes['left-panel__header-title']}>
+                        <h2 
+                            className={classes['left-panel__header-title']}
+                            style={{ color: darkHyue }}
+                        >
                             { page.heading }
                         </h2>
                     </div>
@@ -117,7 +123,7 @@ const AuthForm = props => {
                             type='submit'
                             style={{ 
                                 backgroundColor: !hover && darkHyue,
-                                color: hover ? darkHyue : page.hyue,
+                                color: hover ? darkHyue : lightHyue,
                                 border: `2px solid ${darkHyue}`
                             }}
                             onMouseEnter={onMouseEnterHandler}
@@ -139,7 +145,7 @@ const AuthForm = props => {
                         <h1>{ page.right.heading }</h1>
                     </div>
                     <div className={classes['form-image']}>
-                        <img src={page.right.image} alt='form image'/>
+                        <img src={page.right.image} alt='login form'/>
                     </div> 
                 </div>
             </Fragment>

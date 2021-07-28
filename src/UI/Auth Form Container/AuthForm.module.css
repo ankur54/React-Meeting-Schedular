@@ -26,7 +26,10 @@ button {
 }
 
 .hor-divider {
-    height: 1px;
+    height: 2px;
+    width: 80%;
+    align-self: center;
+    opacity: 0.25;
 }
 
 .auth-form {
@@ -86,24 +89,20 @@ button {
 }
 
 .left-panel {
-    flex-basis: 60%;
+    flex-basis: 70%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     padding: 7em;
     gap: 2em;
-
-    border-radius: 0.75em 0 0 0.75em;
     background-color: white;
 }
 
 .right-panel {
-    flex-basis: 40%;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-
-    border-radius: 0 0.75em 0.75em 0;
 }
 
 .right-panel__header {

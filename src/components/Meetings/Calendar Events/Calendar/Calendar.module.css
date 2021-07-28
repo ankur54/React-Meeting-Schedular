@@ -3,8 +3,6 @@
     flex-direction: column;
 
     position: relative;
-    width: 100%;
-    height: max-content;
     padding: 1em;
 
     z-index: 2;
@@ -55,7 +53,6 @@
     color:rgba(0, 0, 0, 0.35);
     border-radius: 50%;
     border: 1px solid rgb(0, 0, 0, 0.35);
-    z-index: -1;
 }
 
 .prev-year:hover, 
@@ -93,15 +90,13 @@
 }
 
 .calendar-body {
-    padding: 1vw;
-    max-width: 27em;
-    height: 35%;
+    width: 100%;
     margin: 0 auto;
 }
 
-.calendar-week-day {
-    display: flex;
-    justify-content: space-around;
+.calendar-week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     gap: 0.3em;
 }
 
@@ -119,15 +114,17 @@
 }
 
 .calendar-days {
-    display: flex;
-    flex-wrap: wrap;
-
-    height: 100%;
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: repeat(7, 1fr);
 }
 
 .days-number {
-    flex-basis: calc(100% / 7);
-    padding: 0.75vw 0.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.85vw 0;
     text-align: center;
     font-size: 1.1em;
     font-weight: 400;
@@ -147,11 +144,11 @@
 }
 
 .days-number.show.active {
+    border-radius: 5px;
     border: 3px solid rgb(179, 143, 101);
 }
 
 .curr-date {
-    padding: 0.65em 0;
     color:rgb(190, 201, 177);
     background-color:cadetblue ;
 }
@@ -162,11 +159,11 @@
     height: 100%;
     top: 0;
     left: 0;
-    padding: 1.5em;
+    z-index: 3;
 
-    display: flex;
-    flex-wrap: wrap;
-    align-content: stretch;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
 
     font-family: 'Roboto', sans-serif;
     transform: scale(1.5);

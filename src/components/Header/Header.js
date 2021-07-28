@@ -17,8 +17,8 @@ const Header = props => {
 
     const user = useSelector(state => {
         return {
-            name: state.userName,
-            email: state.userEmail
+            name: state.authentication.userName,
+            email: state.authentication.userEmail
         }
     })
 

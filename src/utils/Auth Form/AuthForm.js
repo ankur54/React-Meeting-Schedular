@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
 import AuthForm from '../../UI/Auth Form Container/AuthForm'
+import { authActions } from '../../store/AuthStore'
 
 const AuthFormConfig = () => {
     const dispatch = useDispatch()
@@ -28,26 +29,23 @@ const AuthFormConfig = () => {
                 }
             })
 
+            response = await response.json()
+
             // throw error if something goes wrong in the backend
             if (response.error) {
                 throw new Error(response.error)
             }
             
             // if everything goes well store token and userId in redux
-            response = await response.json()
             const { token, userId, userName, userEmail } = response
-            dispatch({
-                type: 'login',
-                payload: {
+            dispatch (
+                authActions.login({
                     token,
                     userId,
                     userName,
                     userEmail
-                }
-            })
-            setTimeout(() => { 
-                dispatch({ type: 'logout' })
-            }, 60 * 60 * 1000);
+                })
+            )
             history.replace('/')
         }
         catch (err) {

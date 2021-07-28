@@ -31,11 +31,11 @@ const Calendar = props => {
     }
 
     const nextYearHandler = () => {
-        setYear(prevYear => prevYear = prevYear + 1)
+        setYear(prevYear => prevYear + 1)
     }
 
     const prevYearHandler = () => {
-        setYear(prevYear => prevYear = prevYear - 1)
+        setYear(prevYear => prevYear - 1)
     }
 
     const changeStartTimeHandler = e => {
@@ -89,7 +89,7 @@ const Calendar = props => {
                     className={`${classes['days-number']} 
                                 ${classes.show} 
                                 ${isCurrDate && classes['curr-date']} 
-                                ${(fullDate.localeCompare(dateClicked) === 0) && !isCurrDate && classes.active}`}
+                                ${(dateClicked === dayNumber) && classes.active}`}
                     onClick={dateClickHandler.bind(this, dayNumber)}
                     >{dayNumber}
                     </div>
@@ -148,7 +148,7 @@ const Calendar = props => {
                 />
             </div>
             <div className={classes['calendar-body']}>
-                <div className={classes['calendar-week-day']}>
+                <div className={classes['calendar-week-days']}>
                     {
                         dayNames.map(dayName => (
                             <div 

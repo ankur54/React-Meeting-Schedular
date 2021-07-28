@@ -15,7 +15,7 @@ const AddMeetingForm = ({ displayForm }) => {
     const [endTime, setEndTime] = useState('')
     const [attendees, setAttendees] = useState([])
 
-    const token = useSelector(state => state.token)
+    const token = useSelector(state => state.authentication.token)
     
     useEffect(() => {
         if (displayForm) setRender(prev => prev = true)

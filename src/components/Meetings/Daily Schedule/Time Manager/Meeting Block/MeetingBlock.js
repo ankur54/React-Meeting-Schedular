@@ -30,7 +30,7 @@ const MeetingBlock = props => {
                         height: `calc((5em / 60) * ${durationInMinutes})`,
                         top: `calc(10px + (5em / 60) * ${meetingStartOffset})`
                     }}
-                onClick={onEventClick}
+                onClick={onEventClick.bind(this, _id)}
             >
             </div>
         )

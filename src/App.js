@@ -1,8 +1,10 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import openSocket from 'socket.io-client'
 
-import classes from './App.module.css';
+
+import './App.css'
 import Header from './components/Header/Header';
 import Meetings from './components/Meetings/Meetings';
 import Teams from './components/Teams/Teams';
@@ -11,6 +13,8 @@ import Modal from './UI/Modal Container/Modal';
 import Search from './UI/Search/Search';
 import AuthFormConfig from './utils/Auth Form/AuthForm';
 import SearchResults from './utils/Search Results/SearchResults';
+import { authActions } from './store/AuthStore'
+import { meetingActions } from './store/MeetingStore'
 
 
 function App() {
@@ -20,10 +24,46 @@ function App() {
   const [tab, setTab] = useState('meeting')
   const [meetingsList, setMeetingsList] = useState([])
 
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.authentication.token)
+  const logoutTime = useSelector(state => state.authentication.expiresIn)
+  const dispatch = useDispatch()
   const isAuthenticated = !!token
 
   console.log(meetingsList)
+  
+  // configuring socket io client
+  useEffect(() => {
+    const socket = openSocket('http://localhost:8000')
+    
+    socket.on('meetings', data => {
+        switch ( data.action ) {
+            case 'CREATE':
+              console.log('Meeting created SUCCESSFULLY')
+              const newMeeting = data.meeting
+              dispatch(meetingActions.addMeeting([ newMeeting ]))
+              break;
+        }
+    })
+  }, [])
+
+  // logout timer
+  useEffect(() => {
+    const date = new Date()
+    const currTime = date.getHours() * 60 * 60 * 1000 + 
+                    date.getMinutes() * 60 * 1000 + 
+                    date.getSeconds() * 1000 + 
+                    date.getMilliseconds()
+    console.log(currTime, logoutTime)
+
+    if (!logoutTime) return;
+
+    const remainingTime = logoutTime - currTime
+    console.log(remainingTime)
+
+    setTimeout(() => {
+      dispatch(authActions.logout())
+    }, remainingTime)
+  }, [dispatch])
 
   const onAddMeetingClick = () => {
     setAddMeetingClicked(prev => !prev);
@@ -46,7 +86,7 @@ function App() {
           'Authorization': `Bearer ${token}`
         }
       })
-      if (response.status != 200) {
+      if (response.status !== 200) {
         throw new Error (response.error)
       }
       

@@ -3,20 +3,28 @@ import classes from './TimeManager.module.css'
 import TimeBlock from "./Time Block/TimeBlock";
 import CurrentTimeIndicator from './Current Time Indicator/CurrentTimeIndicator';
 import MeetingBlock from './Meeting Block/MeetingBlock';
+import { meetingActions } from '../../../../store/MeetingStore'
+
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const TimeManager = props => {
-    const { 
-        onEventClick, 
-        date 
-    } = props
+    const { date } = props
     const [currHr, setCurrHr] = useState(new Date().getHours())
-    const [meetings, setMeetings] = useState([])
     
-    const token = useSelector(state => state.token)
+    const token = useSelector(state => state.authentication.token)
+    let meetings = [...useSelector(state => state.meeting.meetings)]
+    meetings.sort((meeting1, meeting2) => {
+        const hour1 = +(meeting1.startTime.split(':')[0])
+        const hour2 = +(meeting2.startTime.split(':')[0])
+        return hour1 - hour2
+    })
+    
+    const dispatch = useDispatch()
+
     const startTime = '00:00'
     const endTime = '23:59'
+    console.log(meetings)
 
     useEffect(async () => {
         try {
@@ -28,13 +36,14 @@ const TimeManager = props => {
                 }
             })
             response = await response.json()
+
             if (response.error) throw new Error(response.error)
-            setMeetings(response)
+            dispatch(meetingActions.getMeetings([ ...response ]))
         }
         catch (error) {
             console.log(error.message)
         }
-    }, [])
+    }, [date, startTime, endTime])
 
     let interval = null;
 
@@ -52,11 +61,15 @@ const TimeManager = props => {
         }
     }, [])
 
+    const onEventClick = meetingId => {
+        dispatch(meetingActions.setMeeting(meetingId))
+    }
+
     let idx = 0;
     const timeBlocks = [...Array(24).keys()].map(hour => {
         const meetingList = []
         while (idx < meetings.length) {
-            const meetingStartHour = parseInt(meetings[idx].startTime.split(':')[0])
+            const meetingStartHour = +(meetings[idx].startTime.split(':')[0])
             if (meetingStartHour && meetingStartHour === hour) {
                 meetingList.push(meetings[idx++])                
             }
