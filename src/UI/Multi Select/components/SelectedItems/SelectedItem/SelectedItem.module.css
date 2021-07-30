@@ -1,0 +1,14 @@
+.selected-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    padding: 0.2em 0.3em;
+    padding-right: 1.5em;
+    border-radius: 50px;
+    color: white;
+    background-color: #aaa;
+}
+
+.selected-item:hover {
+    cursor: pointer;
+}

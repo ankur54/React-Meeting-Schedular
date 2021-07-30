@@ -1,0 +1,6 @@
+.items-list {
+    width: 90%;
+    height: 100%;
+    overflow-y: auto;
+    align-self: center;
+}

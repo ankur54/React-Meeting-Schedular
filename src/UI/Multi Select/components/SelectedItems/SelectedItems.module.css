@@ -1,0 +1,7 @@
+.selected-items {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    align-self: center;
+    gap: 0.5em;
+}

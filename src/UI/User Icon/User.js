@@ -1,8 +1,9 @@
-import classes from './User.module.css'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-
 import { Person } from '@material-ui/icons'
+
+import classes from './User.module.css'
+import { authActions } from '../../store/AuthStore'
 
 const UserAccount = props => {
     const {
@@ -18,7 +19,7 @@ const UserAccount = props => {
     }
 
     const onLogoutHandler = () => {
-        dispatch({ type: 'logout' })
+        dispatch(authActions.logout())
     }
 
     return (

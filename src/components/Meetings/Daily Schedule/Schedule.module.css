@@ -1,6 +1,6 @@
 .daily-schedule {
     flex-grow: 1;
-    height: calc(100vh);
+    height: calc(100vh - 3rem);
     padding: 2em 1em;
 }
 

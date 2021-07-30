@@ -70,20 +70,9 @@ form.create-meeting >
     flex-basis: 70%;
 }
 
-button.create-meeting {
-    padding: 0.75em 1em;
-    margin-left: 1em;
-    margin-top: 1em;
-    background-color: transparent;
-    border: 2px solid rgb(105, 166, 168);
-    border-radius: 4px;
-    color: rgb(52, 124, 115);
-}
-
-button.create-meeting:hover {
-    cursor: pointer;
-    background-color: rgb(105, 166, 168);
-    color: rgb(211, 211, 211);
+.btn-grp {
+    display: flex;
+    gap: 1em;
 }
 
 @keyframes dropdown {
