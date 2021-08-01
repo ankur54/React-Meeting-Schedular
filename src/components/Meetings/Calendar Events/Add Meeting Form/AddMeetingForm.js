@@ -25,22 +25,6 @@ const AddMeetingForm = ({ displayForm }) => {
     if (displayForm) setRender(true);
   }, [displayForm]);
 
-  // useEffect(async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:8000/auth/users", {
-  //       method: "GET",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     if (response.status === 401) throw new Error(response.error);
-  //     const users = await response.json();
-  //     setUsers(users);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // }, []);
-
   useEffect(() => {
     setUsers((user) =>
       user.sort((userA, userB) => userA.name.localeCompare(userB.name))
@@ -98,26 +82,12 @@ const AddMeetingForm = ({ displayForm }) => {
     }
   };
 
-  // const filterItems = (state, action) => {
-  //   if (!action) return state;
-
-  //   return state.filter(
-  //     (item) =>
-  //       item.name.toLowerCase().indexOf(action.toLowerCase()) > -1 ||
-  //       item.email.toLowerCase().indexOf(action.toLowerCase()) > -1
-  //   );
-  // };
-
   const selectItemHandler = (user) => {
     setAttendees((prev) => {
       const items = [...prev];
       items.push(user);
       return items;
     });
-    // setUsers((prev) => {
-    //   let items = [...prev];
-    //   return items.filter((item) => user.email !== item.email);
-    // });
   };
 
   const unSelectItemHandler = (user) => {
@@ -125,11 +95,6 @@ const AddMeetingForm = ({ displayForm }) => {
       const items = [...prev];
       return items.filter((item) => user.email !== item.email);
     });
-    // setUsers((prev) => {
-    //   let items = [...prev];
-    //   items.push(user);
-    //   return items;
-    // });
   };
 
   const getItemsHandler = async (searchCriteria) => {
@@ -151,12 +116,6 @@ const AddMeetingForm = ({ displayForm }) => {
 			throw new Error(err.message);
 		}
   };
-
-  // const optionsList = users.map((user) => (
-  //   <option key={user._id} value={user.email}>
-  //     {user.name}
-  //   </option>
-  // ));
 
   const dateObj = new Date();
   const currDate = `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`;
@@ -261,16 +220,6 @@ const AddMeetingForm = ({ displayForm }) => {
               <div>Create Meeting</div>
             </Button>
           </div>
-          {/* <select 
-                    onChange={onChangeAttendee} 
-                    name="select-attendee" 
-                    id={classes['select-attendee']}
-                    value={attendees && attendees.length > 0 ? 
-                        attendees[0] : ''}
-                >
-                    <option>Choose an Attendee</option>
-                    { optionsList }
-                </select> */}
         </form>
       </Fragment>
     )

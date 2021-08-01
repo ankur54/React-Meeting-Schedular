@@ -6,7 +6,6 @@ import classes from "./EventDetails.module.css";
 import Button from "../../../../UI/Button/Button";
 import Modal from "../../../../UI/Modal Container/Modal";
 import MultiSelect from "../../../../UI/Multi Select/MultiSelect";
-import socket from "../../../../utils/Socket Config/SocketConfig";
 
 const EventDetails = () => {
 	const monthNames = [
@@ -40,36 +39,11 @@ const EventDetails = () => {
 	useEffect(() => {
 		if (!!meetingDetails) {
 			setRender(true);
-			// [ TODO ] get all the users without any filter
-			// const selectedEmail = meetingDetails.attendees.map(
-			// 	(attendee) => attendee.email
-			// );
-			// setUsers(
-			// 	users.filter((user) => !selectedEmail.includes(user.email))
-			// );
 		} else {
 			setRender(false);
 		}
 	}, [meetingDetails]);
 
-	// useEffect(async () => {
-	// 	try {
-	// 		const response = await fetch("http://localhost:8000/auth/users", {
-	// 			method: "GET",
-	// 			headers: {
-	// 				Authorization: `Bearer ${token}`,
-	// 			},
-	// 		});
-	// 		if (response.error) throw new Error(response.error);
-	// 		const _users = await response.json();
-	// 		const selectedEmail = attendees.map((attendee) => attendee.email);
-	// 		setUsers(
-	// 			_users.filter((user) => !selectedEmail.includes(user.email))
-	// 		);
-	// 	} catch (error) {
-	// 		console.log(error.message);
-	// 	}
-	// }, []);
 
 	useEffect(() => {
 		setUsers((user) =>
@@ -121,26 +95,12 @@ const EventDetails = () => {
 		}
 	};
 
-	// const filterItems = (state, action) => {
-	// 	if (!action) return state;
-
-	// 	return state.filter(
-	// 		(item) =>
-	// 			item.name.toLowerCase().indexOf(action.toLowerCase()) > -1 ||
-	// 			item.email.toLowerCase().indexOf(action.toLowerCase()) > -1
-	// 	);
-	// };
-
 	const selectItemHandler = (user) => {
 		setAttendees((prev) => {
 			const items = [...prev];
 			items.push(user);
 			return items;
 		});
-		// setUsers((prev) => {
-		// 	let items = [...prev];
-		// 	return items.filter((item) => user.email !== item.email);
-		// });
 	};
 
 	const unSelectItemHandler = (user) => {
@@ -148,11 +108,6 @@ const EventDetails = () => {
 			const items = [...prev];
 			return items.filter((item) => item._id !== user._id);
 		});
-		// setUsers((prev) => {
-		// 	const items = [...prev];
-		// 	items.push(user);
-		// 	return items;
-		// });
 	};
 
 	const removeSelfHandler = async (e) => {
