@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import numberFormat from '../utils/Number Formatter/NumberFormat'
 
 const initialState = {
     token: localStorage.getItem('token') || null,
