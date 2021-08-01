@@ -1,26 +1,33 @@
-import classes from './Schedule.module.css';
+import classes from "./Schedule.module.css";
+import TimeManager from "./Time Manager/TimeManager";
 
-import TimeManager from './Time Manager/TimeManager';
+import { useSelector } from 'react-redux'
 
-const Schedule = props => {
-    const { date, changeEventClickedHandler } = props
-    const { year, month, dateNum, day } = date
+const Schedule = () => {
+	const date = useSelector((state) => state.application.date);
+	const month = useSelector((state) => state.application.month);
+	const year = useSelector((state) => state.application.year);
+
+	const dateString = new Date(year, month, date)
+        .toLocaleDateString('en-GB', {
+            weekday: 'long',
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        })
     
-    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    const day = dateString.split(' ')[0].slice(0, -1)
+    const monthName = dateString.split(" ")[2];
 
-    const dateString = new Date(year, month, dateNum + 1).toISOString().split('T')[0]
-
-    return (
-        <section className={classes['daily-schedule']}>
-            <h2 className={classes['today-date']}>{`${dateNum} ${monthNames[month]}, ${year}`}</h2>
-            <h3 className={classes['today-day']}>{`${dayNames[day]}`}</h3>
-            <TimeManager 
-                date={dateString}
-                onEventClick={changeEventClickedHandler} 
-            />
-        </section>
-    )
-}
+	return (
+		<section className={classes["daily-schedule"]}>
+			<h2
+				className={classes["today-date"]}
+			>{`${date} ${monthName}, ${year}`}</h2>
+			<h3 className={classes["today-day"]}>{`${day}`}</h3>
+			<TimeManager />
+		</section>
+	);
+};
 
 export default Schedule;

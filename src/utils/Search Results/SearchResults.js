@@ -1,30 +1,43 @@
-import classes from './SearchResults.module.css'
-import SearchView from './Search View/SearchView'
-import SearchResult from './Search Result/SearchResult'
+import classes from "./SearchResults.module.css";
+import SearchView from "./Search View/SearchView";
+import SearchResult from "./Search Result/SearchResult";
 
-const SearchResults = props => {
-    const { searchResults } = props
+import { useEffect, useState } from 'react'
 
-    const searchResultsList = searchResults.map(result => {
-        return (
-            <SearchResult
-                key={result._id}
-                title={result.title}
-                date={result.date}
-                startTime={result.startTime}
-                endTime={result.endTime}
-            />
-        )
-    })
+const SearchResults = (props) => {
+	const { searchResults } = props;
+	const [selectedMeeting, setSelectedMeeting] = useState(null);
+	const onMeetingSelecteHandler = (idx) => {
+		setSelectedMeeting(searchResults[idx]);
+    };
+    
+    useEffect(() => {
+        return () => {
+            setSelectedMeeting(null)
+        }
+    }, [])
 
-    return (
-        <div className={classes['search-results']}>
-            <div className={classes['search-list']}>
-                { searchResultsList }
-            </div>
-            <SearchView/>
-        </div>
-    )
-}
+	const searchResultsList = searchResults.map((result, idx) => {
+		return (
+			<SearchResult
+				key={result._id}
+				title={result.title}
+				date={result.date}
+				startTime={result.startTime}
+				endTime={result.endTime}
+				onClickHandler={onMeetingSelecteHandler.bind(this, idx)}
+			/>
+		);
+	});
 
-export default SearchResults
+	return (
+		<div className={classes["search-results"]}>
+			<div className={classes["search-list"]}>{searchResultsList}</div>
+			{searchResults.length > 0 && (
+				<SearchView meeting={selectedMeeting} />
+			)}
+		</div>
+	);
+};
+
+export default SearchResults;

@@ -18,6 +18,7 @@ p::after, p::before {
 
 .search-result-container:hover {
     transform: scale(1.25);
+    cursor: pointer;
     box-shadow: 0 5px 1em rgba(0, 0, 0, 0.5);
 }
 
@@ -53,7 +54,7 @@ p::after, p::before {
     flex-grow: 1;
     background-color: #efefef;
     border-left: 0.35em solid #6a94e2;
-    /* border-radius: 0 0.5em 0.5em 0; */
+    border-radius: 0 0.5em 0.5em 0;
 }
 
 .meeting-info > * {
@@ -63,4 +64,8 @@ p::after, p::before {
 .timing {
     opacity: 0.5;
     letter-spacing: 0.1em;
+}
+
+.timing::after, .timing::before {
+    display: none;
 }

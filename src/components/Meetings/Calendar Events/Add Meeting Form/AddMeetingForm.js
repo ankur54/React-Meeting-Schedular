@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useSelector } from "react-redux";
-import { PersonAdd } from "@material-ui/icons";
+import { PersonAdd, ThumbUp, VideoCall } from "@material-ui/icons";
 
 import classes from "./AddMeetingForm.module.css";
 import timeFormatter from "../../../../utils/Time Formater/TimeFormatter";
 import Modal from "../../../../UI/Modal Container/Modal";
 import Button from "../../../../UI/Button/Button";
+import MultiSelect from "../../../../UI/Multi Select/MultiSelect";
 
 const AddMeetingForm = ({ displayForm }) => {
   const [render, setRender] = useState(displayForm);
@@ -16,38 +17,48 @@ const AddMeetingForm = ({ displayForm }) => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [attendees, setAttendees] = useState([]);
+  const [attendeeModal, setAttendeeModal] = useState(false);
 
   const token = useSelector((state) => state.authentication.token);
 
   useEffect(() => {
-    if (displayForm) setRender((prev) => (prev = true));
+    if (displayForm) setRender(true);
   }, [displayForm]);
 
-  useEffect(async () => {
-    try {
-      const response = await fetch("http://localhost:8000/auth/users", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.status === 401) throw new Error(response.error);
-      const users = await response.json();
-      setUsers(users);
-    } catch (error) {
-      console.log(error.message);
-    }
-  }, []);
+  // useEffect(async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:8000/auth/users", {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response.status === 401) throw new Error(response.error);
+  //     const users = await response.json();
+  //     setUsers(users);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    setUsers((user) =>
+      user.sort((userA, userB) => userA.name.localeCompare(userB.name))
+    );
+  });
 
   const onUnMount = () => {
-    if (!displayForm) setRender((prev) => (prev = false));
+    if (!displayForm) setRender(false);
   };
   const onChangeTitle = (e) => setTitle(e.target.value);
   const onChangeDescription = (e) => setDescription(e.target.value);
   const onChangeDate = (e) => setDate(e.target.value);
   const onChangeStartTime = (e) => setStartTime(e.target.value);
   const onChangeEndTime = (e) => setEndTime(e.target.value);
-  const onChangeAttendee = (e) => setAttendees([e.target.value]);
+  const onToggleModal = (e) => {
+    e.preventDefault();
+    setAttendeeModal((prev) => !prev);
+  };
   const onSubmitFormHandler = async (e) => {
     e.preventDefault();
 
@@ -58,7 +69,7 @@ const AddMeetingForm = ({ displayForm }) => {
         date,
         startTime: timeFormatter(startTime),
         endTime: timeFormatter(endTime),
-        attendees,
+        attendees: attendees.map((attendee) => attendee.email),
       };
       console.log(user);
       let res = await fetch("http://localhost:8000/meeting/add", {
@@ -87,11 +98,65 @@ const AddMeetingForm = ({ displayForm }) => {
     }
   };
 
-  const optionsList = users.map((user) => (
-    <option key={user._id} value={user.email}>
-      {user.name}
-    </option>
-  ));
+  // const filterItems = (state, action) => {
+  //   if (!action) return state;
+
+  //   return state.filter(
+  //     (item) =>
+  //       item.name.toLowerCase().indexOf(action.toLowerCase()) > -1 ||
+  //       item.email.toLowerCase().indexOf(action.toLowerCase()) > -1
+  //   );
+  // };
+
+  const selectItemHandler = (user) => {
+    setAttendees((prev) => {
+      const items = [...prev];
+      items.push(user);
+      return items;
+    });
+    // setUsers((prev) => {
+    //   let items = [...prev];
+    //   return items.filter((item) => user.email !== item.email);
+    // });
+  };
+
+  const unSelectItemHandler = (user) => {
+    setAttendees((prev) => {
+      const items = [...prev];
+      return items.filter((item) => user.email !== item.email);
+    });
+    // setUsers((prev) => {
+    //   let items = [...prev];
+    //   items.push(user);
+    //   return items;
+    // });
+  };
+
+  const getItemsHandler = async (searchCriteria) => {
+    try {
+			let response = await fetch(
+				`http://localhost:8000/auth/users?search=${searchCriteria}`,
+				{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			response = await response.json();
+			if (response.error) throw new Error(response.error);
+			return response;
+		} catch (err) {
+			throw new Error(err.message);
+		}
+  };
+
+  // const optionsList = users.map((user) => (
+  //   <option key={user._id} value={user.email}>
+  //     {user.name}
+  //   </option>
+  // ));
 
   const dateObj = new Date();
   const currDate = `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`;
@@ -99,91 +164,115 @@ const AddMeetingForm = ({ displayForm }) => {
 
   return (
     render && (
-      <form
-        action=""
-        method="post"
-        onSubmit={onSubmitFormHandler}
-        className={`${classes["create-meeting"]} ${
-          displayForm ? classes.show : classes.hide
-        }`}
-        onAnimationEnd={onUnMount}
-      >
-        <input
-          onChange={onChangeTitle}
-          type="text"
-          name="meeting-title"
-          id={classes["create-meeting-title"]}
-          required
-          placeholder="Enter meeting title"
-          value={title}
-        />
-        <div className={classes["meeting-date-container"]}>
-          <label>Select meeting date</label>
-          <input
-            onChange={onChangeDate}
-            type="date"
-            name="meeting-date"
-            id={classes["create-meeting-date"]}
-            value={date}
-            min={currDate}
+      <Fragment>
+        <Modal showModal={attendeeModal} onToggleModal={onToggleModal}>
+          <MultiSelect
+            getItems={getItemsHandler}
+            selectedItems={attendees}
+            onSelectItem={selectItemHandler}
+            onDeselectItem={unSelectItemHandler}
           />
-        </div>
-        <div className={classes["start-time-container"]}>
-          <label>Start Time</label>
-          <input
-            onChange={onChangeStartTime}
-            type="time"
-            name="meeting-start-time"
-            id={classes["create-meeting-start-time"]}
-            value={startTime}
-            min={currTime}
-          />
-        </div>
-        <div className={classes["end-time-container"]}>
-          <label>End Time</label>
-          <input
-            onChange={onChangeEndTime}
-            type="time"
-            name="meeting-end-time"
-            id={classes["create-meeting-end-time"]}
-            value={endTime}
-            min={startTime}
-          />
-        </div>
-        <input
-          onChange={onChangeDescription}
-          type="text"
-          name="meeting-description"
-          id={classes["create-meeting-description"]}
-          placeholder="What the meeting is about?"
-          value={description}
-        />
-
-        <div className={classes["btn-grp"]}>
-          <Button type="primary" color="#548385">
-            <PersonAdd fontSize="medium" />
-            <div>Add Attendee</div>
-          </Button>
           <Button
-            func="submit"
             type="secondary"
-            color="#548385"
-            onClickHandler={onSubmitFormHandler}
+            color="#7B6F14"
+            onClickHandler={onToggleModal}
           >
-            <div>Create Meeting</div>
+            <ThumbUp />
+            Done
           </Button>
-        </div>
-        {/* <select 
-                onChange={onChangeAttendee} 
-                name="select-attendee" 
-                id={classes['select-attendee']}
-                value={attendees && attendees.length > 0 ? 
-                    attendees[0] : ''}
+        </Modal>
+        <form
+          action=""
+          method="post"
+          onSubmit={onSubmitFormHandler}
+          className={`${classes["create-meeting"]} ${
+            displayForm ? classes.show : classes.hide
+          }`}
+          onAnimationEnd={onUnMount}
+        >
+          <input
+            onChange={onChangeTitle}
+            type="text"
+            name="meeting-title"
+            id={classes["create-meeting-title"]}
+            required
+            placeholder="Enter meeting title"
+            value={title}
+          />
+          <div className={classes["meeting-date-container"]}>
+            <label>Select meeting date</label>
+            <input
+              onChange={onChangeDate}
+              type="date"
+              name="meeting-date"
+              id={classes["create-meeting-date"]}
+              value={date}
+              min={currDate}
+            />
+          </div>
+          <div className={classes["start-time-container"]}>
+            <label>Start Time</label>
+            <input
+              onChange={onChangeStartTime}
+              type="time"
+              name="meeting-start-time"
+              id={classes["create-meeting-start-time"]}
+              value={startTime}
+              min={currTime}
+            />
+          </div>
+          <div className={classes["end-time-container"]}>
+            <label>End Time</label>
+            <input
+              onChange={onChangeEndTime}
+              type="time"
+              name="meeting-end-time"
+              id={classes["create-meeting-end-time"]}
+              value={endTime}
+              min={startTime}
+            />
+          </div>
+          <input
+            onChange={onChangeDescription}
+            type="text"
+            name="meeting-description"
+            id={classes["create-meeting-description"]}
+            placeholder="What the meeting is about?"
+            value={description}
+          />
+
+          <div className={classes["btn-grp"]}>
+            <Button
+              type="none"
+              family="primary"
+              color="#548385"
+              onClickHandler={onToggleModal}
             >
-                <option>Choose an Attendee</option>
-                { optionsList }
-            </select> */}
-      </form>
+              <PersonAdd fontSize="medium" />
+              <div>Add Attendee</div>
+            </Button>
+            <Button
+              type="submit"
+              family="secondary"
+              color="#548385"
+              onClickHandler={onSubmitFormHandler}
+            >
+              <VideoCall fontSize="medium" />
+              <div>Create Meeting</div>
+            </Button>
+          </div>
+          {/* <select 
+                    onChange={onChangeAttendee} 
+                    name="select-attendee" 
+                    id={classes['select-attendee']}
+                    value={attendees && attendees.length > 0 ? 
+                        attendees[0] : ''}
+                >
+                    <option>Choose an Attendee</option>
+                    { optionsList }
+                </select> */}
+        </form>
+      </Fragment>
     )
   );
 };

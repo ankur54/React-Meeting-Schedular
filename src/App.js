@@ -1,170 +1,137 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import openSocket from 'socket.io-client'
+import { Fragment, useEffect, useState } from "react";
+import { Route, Switch } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
+import "./App.css";
+import Header from "./components/Header/Header";
+import Meetings from "./components/Meetings/Meetings";
+import Teams from "./components/Teams/Teams";
 
-import './App.css'
-import Header from './components/Header/Header';
-import Meetings from './components/Meetings/Meetings';
-import Teams from './components/Teams/Teams';
-
-import Modal from './UI/Modal Container/Modal';
-import Search from './UI/Search/Search';
-import AuthFormConfig from './utils/Auth Form/AuthForm';
-import SearchResults from './utils/Search Results/SearchResults';
-import { authActions } from './store/AuthStore'
-import { meetingActions } from './store/MeetingStore'
-
+import AuthFormConfig from "./utils/Auth Form/AuthForm";
+import { authActions } from "./store/AuthStore";
+import { meetingActions } from "./store/MeetingStore";
+import socket from "./utils/Socket Config/SocketConfig";
 
 function App() {
-  const [addMeetingClicked, setAddMeetingClicked] = useState(false)
-  const [addTeamClicked, setAddTeamClicked] = useState(false)
-  const [searchClicked, setSearchClicked] = useState(false)
-  const [tab, setTab] = useState('meeting')
-  const [meetingsList, setMeetingsList] = useState([])
+	const [addMeetingClicked, setAddMeetingClicked] = useState(false);
+	const [addTeamClicked, setAddTeamClicked] = useState(false);
+	const [tab, setTab] = useState("meeting");
 
-  const token = useSelector(state => state.authentication.token)
-  const logoutTime = useSelector(state => state.authentication.expiresIn)
-  const dispatch = useDispatch()
-  const isAuthenticated = !!token
+	const token = useSelector((state) => state.authentication.token);
+	const userId = useSelector((state) => state.authentication.userId);
+	const logoutTime = useSelector((state) => state.authentication.expiresIn);
+	const dispatch = useDispatch();
+	const isAuthenticated = !!token;
 
-  console.log(meetingsList)
-  
-  // configuring socket io client
-  useEffect(() => {
-    const socket = openSocket('http://localhost:8000')
-    
-    socket.on('meetings', data => {
-        switch ( data.action ) {
-            case 'CREATE':
-              console.log('Meeting created SUCCESSFULLY')
-              const newMeeting = data.meeting
-              dispatch(meetingActions.addMeeting([ newMeeting ]))
-              break;
-        }
-    })
-  }, [])
+	// configuring socket io client
+	useEffect(() => {
+		socket.on("meetings", (data) => {
+			if (data.action === "CREATE") {
+				console.log("Meeting created SUCCESSFULLY");
+				const newMeeting = data.meeting;
+				dispatch(meetingActions.addMeeting([newMeeting]));
+			} else if (data.action === "ADD USER") {
+				console.log("Meeting updated SUCCESSFULLY");
+				const newMeeting = data.meeting;
+				const modifiedUser = data.user;
 
-  // logout timer
-  useEffect(() => {
-    const date = new Date()
-    const currTime = date.getHours() * 60 * 60 * 1000 + 
-                    date.getMinutes() * 60 * 1000 + 
-                    date.getSeconds() * 1000 + 
-                    date.getMilliseconds()
-    console.log(currTime, logoutTime)
+				if (userId === modifiedUser._id) {
+					dispatch(meetingActions.addMeeting([newMeeting]));
+				} else {
+					dispatch(
+						meetingActions.updateMeeting({ meeting: newMeeting })
+					);
+					dispatch(meetingActions.setMeeting(newMeeting._id));
+				}
+			} else if (data.action === "REMOVE USER") {
+				console.log("Meeting updated SUCCESSFULLY");
+				const newMeeting = data.meeting;
+				const modifiedUser = data.user;
 
-    if (!logoutTime) return;
+				if (userId === modifiedUser._id) {
+					dispatch(
+						meetingActions.deleteMeeting({ meeting: newMeeting })
+					);
+				} else {
+					dispatch(
+						meetingActions.updateMeeting({ meeting: newMeeting })
+					);
+					dispatch(meetingActions.setMeeting(newMeeting._id));
+				}
+			}
+		});
+	}, []);
 
-    const remainingTime = logoutTime - currTime
-    console.log(remainingTime)
+	// logout timer
+	useEffect(() => {
+		const date = new Date();
+		const currTime =
+			date.getHours() * 60 * 60 * 1000 +
+			date.getMinutes() * 60 * 1000 +
+			date.getSeconds() * 1000 +
+			date.getMilliseconds();
+		console.log(currTime, logoutTime);
 
-    setTimeout(() => {
-      dispatch(authActions.logout())
-    }, remainingTime)
-  }, [dispatch])
+		if (!logoutTime) return;
 
-  const onAddMeetingClick = () => {
-    setAddMeetingClicked(prev => !prev);
-  }
-  const onAddTeamClick = () => {
-    setAddTeamClicked(prev => !prev);
-  }
-  const onSearchClicked = () => {
-    setSearchClicked(prev => !prev);
-  }
-  const onChangeTab = tab => {
-    setTab(tab)
-  }
-  const getSearchResults = async input => {
-    try {
-      console.log(input)
-      const response = await fetch(`http://localhost:8000/meeting/filter?phrase=${input}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      if (response.status !== 200) {
-        throw new Error (response.error)
-      }
-      
-      const meetings = await response.json()
-      setMeetingsList(meetings)
-    }
-    catch (err) {
-      console.log(err)
-    }
-  }
+		const remainingTime = logoutTime - currTime;
+		console.log(remainingTime);
 
+		setTimeout(() => {
+			dispatch(authActions.logout());
+		}, remainingTime);
+	}, [dispatch]);
 
-  const onClickHandler = (
-    tab === 'meeting' ? 
-    onAddMeetingClick :
-    onAddTeamClick
-  )
+	const onAddMeetingClick = () => {
+		setAddMeetingClicked((prev) => !prev);
+	};
+	const onAddTeamClick = () => {
+		setAddTeamClicked((prev) => !prev);
+	};
+	const onChangeTab = (tab) => {
+		setTab(tab);
+	};
 
-  const clickState = (
-    tab === 'meeting' ?
-    addMeetingClicked :
-    addTeamClicked
-  )
+	const onClickHandler =
+		tab === "meeting" ? onAddMeetingClick : onAddTeamClick;
 
-  const mainPage = (
-    <Fragment>
-      <Modal
-        showModal={searchClicked}
-        onToggleModal={onSearchClicked}
-      >
-        <Search onClickHandler={getSearchResults}/>
-        <SearchResults searchResults={meetingsList}/>
-      </Modal>
-      <Header 
-        addClicked={clickState}
-        searchClickedHandler={onSearchClicked}
-        onClickHandler={onClickHandler}
-        onChangeTab={onChangeTab}
-        currTab={tab}
-      />
-      {
-        tab === 'meeting' ? 
-        <Meetings displayForm={addMeetingClicked}/> :
-        <Teams 
-          showModal={addTeamClicked}
-          onToggleModal={onAddTeamClick}
-        />
-      }
-    </Fragment>
-  )
+	const clickState = tab === "meeting" ? addMeetingClicked : addTeamClicked;
 
-  return (
-    <Fragment>
-      <Switch>
-        <Route path='/auth'>
-          <AuthFormConfig/>
-        </Route>
-        {
-          isAuthenticated &&
-          <Route path='/'>
-            { mainPage }
-          </Route>
-        }
-        {
-          !isAuthenticated &&
-          <Route path='*'>
-            <AuthFormConfig/>
-          </Route>
-        }
-        {
-          isAuthenticated &&
-          <Route path='*'>
-            { mainPage }
-          </Route>
-        }
-      </Switch>
-    </Fragment>
-  );
+	const mainPage = (
+		<Fragment>
+			<Header
+				addClicked={clickState}
+				onClickHandler={onClickHandler}
+				onChangeTab={onChangeTab}
+				currTab={tab}
+			/>
+			{tab === "meeting" ? (
+				<Meetings displayForm={addMeetingClicked} />
+			) : (
+				<Teams
+					showModal={addTeamClicked}
+					onToggleModal={onAddTeamClick}
+				/>
+			)}
+		</Fragment>
+	);
+
+	return (
+		<Fragment>
+			<Switch>
+				<Route path="/auth">
+					<AuthFormConfig />
+				</Route>
+				{isAuthenticated && <Route path="/">{mainPage}</Route>}
+				{!isAuthenticated && (
+					<Route path="*">
+						<AuthFormConfig />
+					</Route>
+				)}
+				{isAuthenticated && <Route path="*">{mainPage}</Route>}
+			</Switch>
+		</Fragment>
+	);
 }
 
 export default App;

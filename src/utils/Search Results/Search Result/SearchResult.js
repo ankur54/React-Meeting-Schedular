@@ -2,10 +2,12 @@ import classes from './SearchResult.module.css'
 
 const SearchResult = props => {
     const {
+        key,
         title,
         date,
         startTime,
-        endTime
+        endTime,
+        onClickHandler
     } = props
 
     const monthNames = [
@@ -14,7 +16,11 @@ const SearchResult = props => {
     ]
     
     return (
-        <div className={classes['search-result-container']}>
+        <div
+            key={key}
+            className={classes['search-result-container']}
+            onClick={onClickHandler}
+        >
             <div className={classes['meeting-date']}>
                 <h2 className={classes['month-name']}>{ monthNames[new Date(date).getMonth()] }</h2>
                 <h3 className={classes['date']}>{ new Date(date).getDate() }</h3>
