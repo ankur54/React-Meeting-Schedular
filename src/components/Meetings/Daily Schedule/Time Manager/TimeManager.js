@@ -11,12 +11,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 const TimeManager = (props) => {
 	const currHr = useSelector((state) => state.application.currHour);
-	let date = useSelector((state) => state.application.date);
-	let month = useSelector((state) => state.application.month);
-	let year = useSelector((state) => state.application.year);
-	const startTime = useSelector((state) => state.application.startTime);
-	const endTime = useSelector((state) => state.application.endTime);
-	const token = useSelector((state) => state.authentication.token);
 	let meetings = [...useSelector((state) => state.meeting.meetings)];
 	meetings.sort((meeting1, meeting2) => {
 		const hour1 = +meeting1.startTime.split(":")[0];
@@ -27,34 +21,7 @@ const TimeManager = (props) => {
 	const dispatch = useDispatch();
 	console.log(meetings);
 
-	useEffect(async () => {
-		try {
-			date = date.toLocaleString("en-US", {
-				minimumIntegerDigits: 2,
-				useGrouping: false
-			});
-			month = (month + 1).toLocaleString("en-US", {
-				minimumIntegerDigits: 2,
-				useGrouping: false,
-			});
-			const fullDate = `${year}-${month}-${date}`
-			let response = await fetch(
-				`http://localhost:8000/meeting?date=${fullDate}&startTime=${startTime}&endTime=${endTime}`,
-				{
-					method: "GET",
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			);
-			response = await response.json();
-
-			if (response.error) throw new Error(response.error);
-			dispatch(meetingActions.getMeetings([...response]));
-		} catch (error) {
-			console.log(error.message);
-		}
-	}, [date, startTime, endTime]);
+	
 
 	let interval = null;
 

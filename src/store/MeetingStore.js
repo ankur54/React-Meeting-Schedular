@@ -9,7 +9,7 @@ const meetingSlice = createSlice({
 	name: "Meeting",
 	initialState: initialState,
 	reducers: {
-		getMeetings(state, action) {
+		overwriteMeetings(state, action) {
 			state.meetings = action.payload;
 		},
 		addMeeting(state, action) {

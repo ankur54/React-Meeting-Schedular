@@ -73,14 +73,16 @@
 }
 
 .team-members {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
     align-content: space-around;
     gap: 0.3em;
 }
 
 .team-member {
     flex-basis: 40%;
+    height: min-content;
     padding: 0.2em;
 
     display: none;

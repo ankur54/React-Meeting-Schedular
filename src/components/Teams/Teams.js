@@ -1,46 +1,32 @@
-import classes from './Teams.module.css'
+import Modal from "../../UI/Modal Container/Modal";
+import AddTeam from "./Add Team/AddTeam";
+import TeamCards from "./Team Cards/TeamCards";
+import { teamSocketConfig } from "../../utils/Socket Config/Socket-Team_Config";
+import { teamActions } from "../../store/TeamStore";
+import { fetchTeams } from "../../store/TeamActions";
 
-import TeamCard from './Team Card/TeamCard'
-import Modal from '../../UI/Modal Container/Modal'
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const Teams = props => {
-    const { showModal, onToggleModal } = props
-    
-    return (
-        <Fragment>
-            <Modal 
-                showModal={showModal}
-                onToggleModal={onToggleModal}
-            >
-                <form action="" method="post" className={classes['create-team']}>
-                    <input type="text" name="team-title" id={classes['create-team-title']} required placeholder="Enter team title" />
-                    <textarea name="team-description" id={classes['create-team-description']} cols="30" rows="1" placeholder="What the team is about?"></textarea>
-                    <select name="select-team-member" id={classes['select-team-member']}>
-                        <option>Choose an Attendee</option>
-                        <option value="user.name@mail.domain">Attendee 1</option>
-                        <option value="user.name@mail.domain">Attendee 2</option>
-                        <option value="user.name@mail.domain">Attendee 3</option>
-                        <option value="user.name@mail.domain">Attendee 4</option>
-                        <option value="user.name@mail.domain">Attendee 5</option>
-                        <option value="user.name@mail.domain">Attendee 6</option>
-                        <option value="user.name@mail.domain">Attendee 7</option>
-                        <option value="user.name@mail.domain">Attendee 8</option>
-                        <option value="user.name@mail.domain">Attendee 9</option>
-                        <option value="user.name@mail.domain">Attendee 10</option>
-                    </select>
-                    <button className={classes['create-team']}>
-                        <PersonAddIcon fontSize='small'/>
-                        Create Team
-                    </button>
-                </form>
-            </Modal>
-            <div className={classes['teams-list']}>
-                <TeamCard/>
-            </div>
-        </Fragment>
-    )
-}
+const Teams = (props) => {
+	const { showModal, onToggleModal } = props;
+	const dispatch = useDispatch();
+	const token = useSelector((state) => state.authentication.token);
+	const userId = useSelector((state) => state.authentication.userId);
 
-export default Teams
+	useEffect(() => {
+        dispatch(fetchTeams(token));
+        teamSocketConfig(dispatch, userId)
+	}, []);
+
+	return (
+		<Fragment>
+			<Modal showModal={showModal} onToggleModal={onToggleModal}>
+				<AddTeam />
+			</Modal>
+			<TeamCards />
+		</Fragment>
+	);
+};
+
+export default Teams;
