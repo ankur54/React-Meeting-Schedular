@@ -50,7 +50,7 @@
     display: flex;
     flex-direction: column;
     gap: 2em;
-    padding: 1em 2em;
+    padding: 1em 1em;
     color: #444444;
 
     overflow-y: auto;
@@ -89,6 +89,8 @@ p::before, p::after {
 }
 
 .event-attendee {
+    display: flex;
+    gap: 1em;
     padding: 0.5em 0;
     color: #8559698e;
 }

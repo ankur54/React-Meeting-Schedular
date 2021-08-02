@@ -15,10 +15,10 @@ const AppSlice = createSlice({
 	initialState,
 	reducers: {
 		incrementCurrHour(state) {
-			state.currHour += 1;
+			state.currHour = (state.currHour + 1) % 24;
 		},
 		incrementCurrMinute(state) {
-			state.currMinute += 1;
+			state.currMinute = (state.currMinute + 1) % 60;
 		},
 		setStartTime(state, action) {
 			state.startTime = action.payload;
