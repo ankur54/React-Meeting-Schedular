@@ -10,7 +10,6 @@ import MultiSelect from "../../../../UI/Multi Select/MultiSelect";
 
 const AddMeetingForm = ({ displayForm }) => {
   const [render, setRender] = useState(displayForm);
-  const [users, setUsers] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -24,12 +23,6 @@ const AddMeetingForm = ({ displayForm }) => {
   useEffect(() => {
     if (displayForm) setRender(true);
   }, [displayForm]);
-
-  // useEffect(() => {
-  //   setUsers((user) =>
-  //     user.sort((userA, userB) => userA.name.localeCompare(userB.name))
-  //   );
-  // });
 
   const onUnMount = () => {
     if (!displayForm) setRender(false);

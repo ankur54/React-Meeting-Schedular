@@ -9,8 +9,6 @@ import Teams from "./components/Teams/Teams";
 
 import AuthFormConfig from "./utils/Auth Form/AuthForm";
 import { authActions } from "./store/AuthStore";
-import { meetingActions } from "./store/MeetingStore";
-import socket from "./utils/Socket Config/SocketConfig";
 
 function App() {
 	const [addMeetingClicked, setAddMeetingClicked] = useState(false);
@@ -18,50 +16,9 @@ function App() {
 	const [tab, setTab] = useState("meeting");
 
 	const token = useSelector((state) => state.authentication.token);
-	const userId = useSelector((state) => state.authentication.userId);
 	const logoutTime = useSelector((state) => state.authentication.expiresIn);
 	const dispatch = useDispatch();
 	const isAuthenticated = !!token;
-
-	// configuring socket io client
-	useEffect(() => {
-		socket.on("meetings", (data) => {
-			if (data.action === "CREATE") {
-				const newMeeting = data.meeting;
-				dispatch(meetingActions.addMeeting([newMeeting]));
-			} else if (data.action === "ADD USER") {
-				const newMeeting = data.meeting;
-				const modifiedUser = data.user;
-
-				if (userId === modifiedUser._id) {
-					dispatch(meetingActions.addMeeting([newMeeting]));
-				} else {
-					dispatch(
-						meetingActions.updateMeeting({ meeting: newMeeting })
-					);
-					dispatch(meetingActions.setMeeting(newMeeting._id));
-				}
-			} else if (
-				data.action === "REMOVE USER" ||
-				data.action === "REJECTED"
-			) {
-				const newMeeting = data.meeting;
-				const userid = data.userId;
-
-				dispatch(
-					meetingActions.updateMeeting({ meeting: newMeeting })
-				);
-				if (userId !== userid) {
-					dispatch(meetingActions.setMeeting(newMeeting._id));
-				}
-			} else if (data.action === "ACCEPTED") {
-				const newMeeting = data.meeting;
-				const userid = data.userId;
-				dispatch(meetingActions.updateMeeting({ meeting: newMeeting }));
-				dispatch(meetingActions.setMeeting(newMeeting._id));
-			}
-		});
-	}, []);
 
 	// logout timer
 	useEffect(() => {

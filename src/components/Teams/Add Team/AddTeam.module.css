@@ -1,0 +1,35 @@
+.create-team {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em 2em;
+    font-family: 'Roboto', sans-serif;
+}
+
+#create-team-title {
+    flex-basis: 100%;
+    padding: 0.5em 1em;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 5px;
+    border-bottom: 2px solid #bbb;
+}
+
+#create-team-title::placeholder,
+#create-team-description::placeholder {
+    opacity: 0.4;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 0.16em;
+}
+
+#create-team-description {
+    flex-basis: 100%;
+    padding: 0.5em 1em;
+    border: none;
+    border-bottom: 2px solid #bbb;
+    border-radius: 5px;
+}
+
+.btn-grp {
+    display: flex;
+    gap: 2em;
+}
