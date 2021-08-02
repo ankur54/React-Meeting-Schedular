@@ -1,6 +1,15 @@
 import { useState, useEffect, Fragment } from "react";
 import { useSelector } from "react-redux";
-import { PersonAdd, RemoveCircle, ThumbUp } from "@material-ui/icons";
+import {
+	CheckCircleOutline,
+	CancelOutlined,
+	Clear,
+	Done,
+	HelpOutline,
+	PersonAdd,
+	RemoveCircle,
+	ThumbUp,
+} from "@material-ui/icons";
 
 import classes from "./EventDetails.module.css";
 import Button from "../../../../UI/Button/Button";
@@ -29,9 +38,12 @@ const EventDetails = () => {
 	);
 	const token = useSelector((state) => state.authentication.token);
 	const userEmail = useSelector((state) => state.authentication.userEmail);
+	const selDate = useSelector((state) => state.application.date);
+	const selMonth = useSelector((state) => state.application.month);
+	const selYear = useSelector((state) => state.application.year);
+
 	const [render, setRender] = useState(!!meetingDetails);
 	const [attendeeModal, setAttendeeModal] = useState(false);
-	const [users, setUsers] = useState([]);
 	const [attendees, setAttendees] = useState([]);
 
 	const date = new Date(meetingDetails && meetingDetails.date);
@@ -43,13 +55,6 @@ const EventDetails = () => {
 			setRender(false);
 		}
 	}, [meetingDetails]);
-
-
-	useEffect(() => {
-		setUsers((user) =>
-			user.sort((userA, userB) => userA.name.localeCompare(userB.name))
-		);
-	});
 
 	const onUnmount = () => {
 		if (!!!meetingDetails) setRender(false);
@@ -163,15 +168,124 @@ const EventDetails = () => {
 		}
 	};
 
+	const respondToInvitation = async (meetingId, response) => {
+		try {
+			let res = await fetch(
+				`http://localhost:8000/meeting/${response}/${meetingId}`,
+				{
+					method: "PATCH",
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			res = await res.json();
+			console.log(res);
+		} catch (err) {
+			console.log(err.message);
+		}
+	};
+
 	const meetingAttendees = !!meetingDetails
-		? meetingDetails.attendees.map((attendee) => (
-				<div key={attendee._id} className={classes["event-attendee"]}>
-					{attendee.email}
-				</div>
-		  ))
+		? meetingDetails.attendees.map((attendee) => {
+				let indicator = (
+					<HelpOutline fontSize="small" style={{ color: "grey" }} />
+				);
+				if (attendee.status === "ACCEPT")
+					indicator = (
+						<CheckCircleOutline
+							fontSize="small"
+							style={{ color: "#339D64" }}
+						/>
+					);
+				if (attendee.status === "REJECT")
+					indicator = (
+						<CancelOutlined
+							fontSize="small"
+							style={{ color: "indianred" }}
+						/>
+					);
+
+				return (
+					<div
+						key={attendee._id}
+						className={classes["event-attendee"]}
+					>
+						{indicator}
+						<div>{attendee.email}</div>
+					</div>
+				);
+		  })
 		: [];
 
-	console.log(render);
+	const _user =
+		meetingDetails &&
+		meetingDetails.attendees.find(
+			(attendee) => attendee.email === userEmail
+		);
+	const userStatus = _user && _user.status;
+	const dateValidity =
+		new Date().getDate() >= selDate &&
+		new Date().getMonth() >= selMonth &&
+		new Date().getFullYear() >= selYear;
+
+	const statusButtons = render &&
+		dateValidity &&
+		!!meetingDetails &&
+		userStatus === "NO ANSWER" && (
+			<div
+				className={`${classes["btn-grp"]} ${classes["status-update"]}`}
+			>
+				<Button
+					shape="round"
+					family="primary"
+					color="#548385"
+					onClickHandler={respondToInvitation.bind(
+						this,
+						meetingDetails._id,
+						"accept"
+					)}
+				>
+					<Done fontSize="small" />
+				</Button>
+				<Button
+					shape="round"
+					family="primary"
+					color="indianred"
+					onClickHandler={respondToInvitation.bind(
+						this,
+						meetingDetails._id,
+						"reject"
+					)}
+				>
+					<Clear fontSize="small" />
+				</Button>
+			</div>
+		);
+
+	const editParticipationButtons = dateValidity &&
+		userStatus === "ACCEPT" && (
+			<div className={classes["btn-grp"]}>
+				<Button
+					type="none"
+					family="primary"
+					color="#548385"
+					onClickHandler={onToggleModal}
+				>
+					<PersonAdd fontSize="medium" />
+					<div>Add Attendee</div>
+				</Button>
+				<Button
+					type="none"
+					family="secondary"
+					color="indianred"
+					onClickHandler={removeSelfHandler}
+				>
+					<RemoveCircle fontSize="medium" />
+					<div>Excuse Yourself</div>
+				</Button>
+			</div>
+		);
 
 	return (
 		render &&
@@ -222,6 +336,7 @@ const EventDetails = () => {
 									{meetingDetails.endTime}
 								</p>
 							</div>
+							{statusButtons}
 						</div>
 					</div>
 					<div className={classes["event-scrollable-section"]}>
@@ -232,26 +347,7 @@ const EventDetails = () => {
 							{meetingAttendees}
 						</div>
 					</div>
-					<div className={classes["btn-grp"]}>
-						<Button
-							type="none"
-							family="primary"
-							color="#548385"
-							onClickHandler={onToggleModal}
-						>
-							<PersonAdd fontSize="medium" />
-							<div>Add Attendee</div>
-						</Button>
-						<Button
-							type="none"
-							family="secondary"
-							color="#548385"
-							onClickHandler={removeSelfHandler}
-						>
-							<RemoveCircle fontSize="medium" />
-							<div>Excuse Yourself</div>
-						</Button>
-					</div>
+					{editParticipationButtons}
 				</div>
 			</Fragment>
 		)

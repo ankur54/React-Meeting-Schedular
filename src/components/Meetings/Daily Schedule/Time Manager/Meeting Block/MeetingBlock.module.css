@@ -2,9 +2,8 @@
     position: absolute;
     left: 6em;
     width: 65%;
-    border-left: 5px solid #cd5c5c8f;
+    border-left: 5px solid ;
     border-radius: 0.5em;
-    background-color: rgb(196, 159, 159, 0.3);
 }
 
 .meeting-range:hover {

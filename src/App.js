@@ -27,11 +27,9 @@ function App() {
 	useEffect(() => {
 		socket.on("meetings", (data) => {
 			if (data.action === "CREATE") {
-				console.log("Meeting created SUCCESSFULLY");
 				const newMeeting = data.meeting;
 				dispatch(meetingActions.addMeeting([newMeeting]));
 			} else if (data.action === "ADD USER") {
-				console.log("Meeting updated SUCCESSFULLY");
 				const newMeeting = data.meeting;
 				const modifiedUser = data.user;
 
@@ -43,21 +41,24 @@ function App() {
 					);
 					dispatch(meetingActions.setMeeting(newMeeting._id));
 				}
-			} else if (data.action === "REMOVE USER") {
-				console.log("Meeting updated SUCCESSFULLY");
+			} else if (
+				data.action === "REMOVE USER" ||
+				data.action === "REJECTED"
+			) {
 				const newMeeting = data.meeting;
-				const modifiedUser = data.user;
+				const userid = data.userId;
 
-				if (userId === modifiedUser._id) {
-					dispatch(
-						meetingActions.deleteMeeting({ meeting: newMeeting })
-					);
-				} else {
-					dispatch(
-						meetingActions.updateMeeting({ meeting: newMeeting })
-					);
+				dispatch(
+					meetingActions.updateMeeting({ meeting: newMeeting })
+				);
+				if (userId !== userid) {
 					dispatch(meetingActions.setMeeting(newMeeting._id));
 				}
+			} else if (data.action === "ACCEPTED") {
+				const newMeeting = data.meeting;
+				const userid = data.userId;
+				dispatch(meetingActions.updateMeeting({ meeting: newMeeting }));
+				dispatch(meetingActions.setMeeting(newMeeting._id));
 			}
 		});
 	}, []);

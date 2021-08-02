@@ -25,11 +25,11 @@ const AddMeetingForm = ({ displayForm }) => {
     if (displayForm) setRender(true);
   }, [displayForm]);
 
-  useEffect(() => {
-    setUsers((user) =>
-      user.sort((userA, userB) => userA.name.localeCompare(userB.name))
-    );
-  });
+  // useEffect(() => {
+  //   setUsers((user) =>
+  //     user.sort((userA, userB) => userA.name.localeCompare(userB.name))
+  //   );
+  // });
 
   const onUnMount = () => {
     if (!displayForm) setRender(false);
