@@ -6,6 +6,7 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import Meetings from "./components/Meetings/Meetings";
 import Teams from "./components/Teams/Teams";
+import Toast from "./UI/Toast/Toast";
 
 import AuthFormConfig from "./utils/Auth Form/AuthForm";
 import { authActions } from "./store/AuthStore";
@@ -17,6 +18,7 @@ function App() {
 
 	const token = useSelector((state) => state.authentication.token);
 	const logoutTime = useSelector((state) => state.authentication.expiresIn);
+	const showNotification = useSelector((state) => state.notification.show);
 	const dispatch = useDispatch();
 	const isAuthenticated = !!token;
 
@@ -76,6 +78,7 @@ function App() {
 
 	return (
 		<Fragment>
+			{showNotification && <Toast />}
 			<Switch>
 				<Route path="/auth">
 					<AuthFormConfig />

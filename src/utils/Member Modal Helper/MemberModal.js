@@ -1,6 +1,6 @@
-import Modal from "../../../UI/Modal Container/Modal";
-import MultiSelect from "../../../UI/Multi Select/MultiSelect";
-import Button from "../../../UI/Button/Button";
+import Modal from "../../UI/Modal Container/Modal";
+import MultiSelect from "../../UI/Multi Select/MultiSelect";
+import Button from "../../UI/Button/Button";
 
 import { ThumbUp } from "@material-ui/icons";
 

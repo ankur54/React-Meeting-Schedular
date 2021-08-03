@@ -1,15 +1,16 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import classes from "./MultiSelect.module.css";
 import ItemsList from "./ItemsList/ItemsList";
 import SelectedItems from "./SelectedItems/SelectedItems";
+import { notificationActions } from "../../store/NotificationStore";
 
 export default function App(props) {
 	const { getItems, selectedItems, onSelectItem, onDeselectItem } = props;
 	const [items, setItems] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
-	// let filteredItems = filterItems(items, searchInput);
-	// filteredItems.sort((itemA, itemB) => itemA.name.localeCompare(itemB.name));
+	const dispatch = useDispatch();
 
 	const addSelectedItem = (idx) => {
 		onSelectItem(items[idx]);
@@ -28,7 +29,13 @@ export default function App(props) {
 				const _items = await getItems(e.target.value);
 				setItems(_items);
 			} catch (err) {
-				console.log(err.message);
+				dispatch(
+					notificationActions.setNotification({
+						title: "Error occured",
+						message: err.message,
+						type: "DANGER",
+					})
+				);
 			}
 		}, 2000);
 	};

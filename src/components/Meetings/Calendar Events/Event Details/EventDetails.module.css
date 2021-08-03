@@ -1,124 +1,125 @@
 .event-details {
-    display: flex;
-    flex-direction: column;
-    gap: 2em;
-    padding: 2em 1.5em;
+	display: flex;
+	flex-direction: column;
+	gap: 2em;
+	padding: 2em 1.5em;
 }
 
 .event-details.show {
-    animation: dropDown 200ms linear;
+	animation: dropDown 200ms linear;
 }
 
 .event-details.hide {
-    animation: dropUp 200ms linear;
+	animation: dropUp 200ms linear;
 }
 
 .event-details__header {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    padding: 0 1em;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	padding: 0 1em;
 
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
+	font-family: "Montserrat", sans-serif;
+	font-weight: 300;
 }
 
-.event-details__header p::after, p::before {
-    display: none;
+.event-details__header p::after,
+p::before {
+	display: none;
 }
 
 .event-header__date-n-time {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
 }
 
 .event-header__title {
-    color: #8d896a;
-    letter-spacing: 4px;
-    font-size: 2.5em;
-    line-height: 3rem;
-    font-family: 'Playfair Display', serif;
+	color: #8d896a;
+	letter-spacing: 4px;
+	font-size: 2.5em;
+	line-height: 3rem;
+	font-family: "Playfair Display", serif;
 }
 
 .event-header__time {
-    display: flex;
-    gap: 0.5em;
+	display: flex;
+	gap: 0.5em;
 }
 
 .event-scrollable-section {
-    display: flex;
-    flex-direction: column;
-    gap: 2em;
-    padding: 1em 1em;
-    color: #444444;
+	display: flex;
+	flex-direction: column;
+	gap: 2em;
+	padding: 1em 1em;
+	color: #444444;
 
-    overflow-y: auto;
-    overflow-x: hidden;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .event-scrollable-section > p {
-    flex-shrink: 0;
+	flex-shrink: 0;
 }
 
-.event-scrollable-section > 
-p::before, p::after {
-    content: '';
-    display: block;
-    position: relative;
-    height: 1px;
-    width: 100%;
-    background-color: #777777;
+.event-description::before,
+.event-description::after {
+	content: "";
+	display: block;
+	position: relative;
+	height: 1px;
+	width: 100%;
+	background-color: #777777;
 }
 
 .event-scrollable-section > p::before {
-    top: -1em;
+	top: -1em;
 }
 
 .event-scrollable-section > p::after {
-    bottom: -1em;
+	bottom: -1em;
 }
 
 .event-description {
-    font-family: 'Roboto', sans-serif;
+	font-family: "Roboto", sans-serif;
 }
 
 .event-attendees {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
+	font-family: "Montserrat", sans-serif;
+	font-weight: 600;
 }
 
 .event-attendee {
-    display: flex;
-    gap: 1em;
-    padding: 0.5em 0;
-    color: #8559698e;
+	display: flex;
+	gap: 1em;
+	padding: 0.5em 0;
+	color: #8559698e;
 }
 
 .btn-grp {
-    display: flex;
-    justify-content: space-evenly;
-    gap: 1em;
+	display: flex;
+	justify-content: space-evenly;
+	gap: 1em;
 }
 
 @keyframes dropDown {
-    0% {
-        opacity: 0;
-        transform: translateY(-100%);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+	0% {
+		opacity: 0;
+		transform: translateY(-100%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes dropUp {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-100%);
-    }
+	0% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-100%);
+	}
 }

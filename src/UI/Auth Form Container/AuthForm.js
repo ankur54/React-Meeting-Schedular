@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react'
 
 import classes from './AuthForm.module.css'
+import Toast from '../Toast/Toast';
 
 const AuthForm = props => {
     const [active, setActive] = useState(0);

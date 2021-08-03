@@ -19,10 +19,6 @@ const TimeManager = (props) => {
 	});
 
 	const dispatch = useDispatch();
-	console.log(meetings);
-
-	
-
 	let interval = null;
 
 	// update hour every 60 * 60 * 1000 ms interval

@@ -1,5 +1,6 @@
 import { Person } from "@material-ui/icons";
 import { Fragment } from "react";
+
 import classes from "./SearchView.module.css";
 
 const SearchView = ({ meeting }) => {
@@ -9,6 +10,7 @@ const SearchView = ({ meeting }) => {
 	// title, description, startTime, endTime, date, organizer, attendees
 	if (meeting) {
 		const {
+			_id,
 			title,
 			description,
 			date,
@@ -59,6 +61,7 @@ const SearchView = ({ meeting }) => {
 							{endTime}
 						</h3>
 					</div>
+					{/* {statusButtons} */}
 				</div>
 				<p
 					className={`
@@ -86,7 +89,10 @@ const SearchView = ({ meeting }) => {
                                 ${classes["sub-header"]}
                             `}
 						>
-							{organizer}
+							<div className={classes["user-name"]}>
+								{organizer.name}
+							</div>
+							( {organizer.email} )
 						</h3>
 					</div>
 				</div>
@@ -108,7 +114,10 @@ const SearchView = ({ meeting }) => {
                                 ${classes["sub-header"]}
                             `}
 							>
-								{attendee.name}
+								<div className={classes["user-name"]}>
+									{attendee.name}
+								</div>
+								( {attendee.email} )
 							</h4>
 						</div>
 					))}

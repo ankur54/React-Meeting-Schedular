@@ -1,8 +1,8 @@
+import { notificationActions } from "./NotificationStore";
 import { teamActions } from "./TeamStore";
 
-
 export const fetchTeams = (token) => {
-    return async (dispatch) => {
+	return async (dispatch) => {
 		const fetchData = async () => {
 			const response = await fetch("http://localhost:8000/team", {
 				method: "GET",
@@ -22,6 +22,13 @@ export const fetchTeams = (token) => {
 			const teams = await fetchData();
 			dispatch(teamActions.overwriteTeams([...teams]));
 		} catch (err) {
+			dispatch(
+				notificationActions.setNotification({
+					title: "Error occured",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 			console.log(err.message);
 		}
 	};

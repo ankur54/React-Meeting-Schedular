@@ -1,4 +1,5 @@
 import { meetingActions } from "./MeetingStore";
+import { notificationActions } from "./NotificationStore";
 
 export const fetchMeetings = (
 	token,
@@ -40,6 +41,13 @@ export const fetchMeetings = (
 			const meetings = await fetchData();
 			dispatch(meetingActions.overwriteMeetings([...meetings]));
 		} catch (err) {
+			dispatch(
+				notificationActions.setNotification({
+					title: "An error occured while fetching meetings",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 			console.log(err.message);
 		}
 	};

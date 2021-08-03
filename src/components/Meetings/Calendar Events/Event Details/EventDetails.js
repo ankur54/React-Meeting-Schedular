@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
 	CheckCircleOutline,
 	CancelOutlined,
@@ -15,6 +15,7 @@ import classes from "./EventDetails.module.css";
 import Button from "../../../../UI/Button/Button";
 import Modal from "../../../../UI/Modal Container/Modal";
 import MultiSelect from "../../../../UI/Multi Select/MultiSelect";
+import { notificationActions } from "../../../../store/NotificationStore";
 
 const EventDetails = () => {
 	const monthNames = [
@@ -41,6 +42,7 @@ const EventDetails = () => {
 	const selDate = useSelector((state) => state.application.date);
 	const selMonth = useSelector((state) => state.application.month);
 	const selYear = useSelector((state) => state.application.year);
+	const dispatch = useDispatch();
 
 	const [render, setRender] = useState(!!meetingDetails);
 	const [attendeeModal, setAttendeeModal] = useState(false);
@@ -91,9 +93,22 @@ const EventDetails = () => {
 
 				response = await response.json();
 				if (response.error) throw new Error(response.error);
+				dispatch(
+					notificationActions.setNotification({
+						title: "User Added",
+						message: `${attendee.name} was successfully added!`,
+						type: "SUCCESS",
+					})
+				);
 			});
 		} catch (err) {
-			console.log(err.message);
+			dispatch(
+				notificationActions.setNotification({
+					title: "Error occured",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 		} finally {
 			setAttendees([]);
 			onToggleModal(e);
@@ -133,7 +148,21 @@ const EventDetails = () => {
 			);
 			response = await response.json();
 			if (response.error) throw new Error(response.error);
+			dispatch(
+				notificationActions.setNotification({
+					title: "REMOVED",
+					message: "You are no longer in the meeting!",
+					type: "WARNING",
+				})
+			);
 		} catch (err) {
+			dispatch(
+				notificationActions.setNotification({
+					title: "Error occured",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 			console.log(err.message);
 		}
 	};
@@ -164,6 +193,13 @@ const EventDetails = () => {
 			if (response.error) throw new Error(response.error);
 			return response;
 		} catch (err) {
+			dispatch(
+				notificationActions.setNotification({
+					title: "Error occured",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 			throw new Error(err.message);
 		}
 	};
@@ -180,9 +216,25 @@ const EventDetails = () => {
 				}
 			);
 			res = await res.json();
-			console.log(res);
+			if (res.error) throw new Error(res.error);
+			dispatch(
+				notificationActions.setNotification({
+					title: response === "accept" ? "CONFIRMED" : "REJECTED",
+					message:
+						response === "accept"
+							? "You are not added to the meeting"
+							: "You have choose to not attend the meeting",
+					type: response === "accept" ? "SUCCESS" : "WARNING",
+				})
+			);
 		} catch (err) {
-			console.log(err.message);
+			dispatch(
+				notificationActions.setNotification({
+					title: "Error occured",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 		}
 	};
 

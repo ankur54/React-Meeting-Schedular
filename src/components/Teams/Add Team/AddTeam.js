@@ -1,21 +1,23 @@
 import classes from "./AddTeam.module.css";
 import Button from "../../../UI/Button/Button";
-import MemberAddModal from "../Member Modal Helper/MemberModal";
+import MemberAddModal from "../../../utils/Member Modal Helper/MemberModal";
+import { notificationActions } from "../../../store/NotificationStore";
 
 import { GroupAdd, PersonAdd, ThumbUp } from "@material-ui/icons";
 import { useState, useRef, Fragment } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const AddTeam = (props) => {
 	const [members, setMembers] = useState([]);
 	const [showModal, setShowModal] = useState(false);
 
-    const onToggleModal = e => {
-        e.preventDefault()
+	const onToggleModal = (e) => {
+		e.preventDefault();
 		setShowModal((prev) => !prev);
 	};
 
 	const token = useSelector((state) => state.authentication.token);
+	const dispatch = useDispatch();
 
 	const titleRef = useRef();
 	const descriptionRef = useRef();
@@ -41,16 +43,26 @@ const AddTeam = (props) => {
 
 			res = await res.json();
 			if (res.error) throw new Error(res.error);
-			// [ TODO ] show success message
-			console.log(res);
-		} catch (error) {
-			// [ TODO ] show error message
-			console.log(error.message);
+			dispatch(
+				notificationActions.setNotification({
+					title: "TEAM CREATED",
+					message: "You have successfully created a team",
+					type: "SUCCESS",
+				})
+			);
+		} catch (err) {
+			dispatch(
+				notificationActions.setNotification({
+					title: "Error occured",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 		} finally {
 			titleRef.current.value = "";
 			descriptionRef.current.value = "";
-            setMembers([]);
-            onToggleModal(e)
+			setMembers([]);
+			onToggleModal(e);
 		}
 	};
 
@@ -70,20 +82,26 @@ const AddTeam = (props) => {
 			if (response.error) throw new Error(response.error);
 			return response;
 		} catch (err) {
-			throw new Error(err.message);
+			dispatch(
+				notificationActions.setNotification({
+					title: "Error occured",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 		}
 	};
 
 	return (
 		<Fragment>
 			<MemberAddModal
-                members={members}
-                setMembers={setMembers}
-                level={2}
-                getItemsHandler={getUsersHandler}
-                onSubmitHandler={onToggleModal}
-                showModal={showModal}
-                setShowModal={setShowModal}
+				members={members}
+				setMembers={setMembers}
+				level={2}
+				getItemsHandler={getUsersHandler}
+				onSubmitHandler={onToggleModal}
+				showModal={showModal}
+				setShowModal={setShowModal}
 			/>
 
 			<form action="" method="post" className={classes["create-team"]}>

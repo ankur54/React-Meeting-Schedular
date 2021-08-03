@@ -1,10 +1,11 @@
 import classes from "./TeamCard.module.css";
 import Button from "../../../../UI/Button/Button";
-import MemberAddModal from "../../Member Modal Helper/MemberModal";
+import MemberAddModal from "../../../../utils/Member Modal Helper/MemberModal";
+import { notificationActions } from "../../../../store/NotificationStore";
 
 import { PersonAdd, CancelRounded } from "@material-ui/icons";
 import { Fragment, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const TeamCard = (props) => {
 	const { teamDetails } = props;
@@ -14,6 +15,7 @@ const TeamCard = (props) => {
 
 	const token = useSelector((state) => state.authentication.token);
 	const userEmail = useSelector((state) => state.authentication.userEmail);
+	const dispatch = useDispatch();
 	const members = teamDetails.members;
 
 	const showMembers = members.slice(0, 3).map((member, i) => (
@@ -34,7 +36,7 @@ const TeamCard = (props) => {
 				{member.name}
 			</div>
 		));
-    
+
 	const onToggleModal = () => {
 		setShowModal((prev) => !prev);
 	};
@@ -67,9 +69,22 @@ const TeamCard = (props) => {
 
 				response = await response.json();
 				if (response.error) throw new Error(response.error);
+				dispatch(
+					notificationActions.setNotification({
+						title: "User Added",
+						message: `${member.name} has been successfully added`,
+						type: "DANGER",
+					})
+				);
 			});
 		} catch (err) {
-			console.log(err.message);
+			dispatch(
+				notificationActions.setNotification({
+					title: "Error occured",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 		} finally {
 			setAddedMembers([]);
 			onToggleModal(e);
@@ -102,7 +117,13 @@ const TeamCard = (props) => {
 			if (response.error) throw new Error(response.error);
 			return response;
 		} catch (err) {
-			throw new Error(err.message);
+			dispatch(
+				notificationActions.setNotification({
+					title: "Error occured",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 		}
 	};
 
@@ -124,8 +145,21 @@ const TeamCard = (props) => {
 			);
 			response = await response.json();
 			if (response.error) throw new Error(response.error);
+			dispatch(
+				notificationActions.setNotification({
+					title: "REMOVED",
+					message: `You are no longer part of the team ${teamDetails.title}`,
+					type: "WARNING",
+				})
+			);
 		} catch (err) {
-			console.log(err.message);
+			dispatch(
+				notificationActions.setNotification({
+					title: "Error occured",
+					message: err.message,
+					type: "DANGER",
+				})
+			);
 		}
 	};
 

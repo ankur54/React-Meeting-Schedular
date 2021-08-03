@@ -2,20 +2,20 @@ import classes from "./SearchResults.module.css";
 import SearchView from "./Search View/SearchView";
 import SearchResult from "./Search Result/SearchResult";
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
 const SearchResults = (props) => {
 	const { searchResults } = props;
 	const [selectedMeeting, setSelectedMeeting] = useState(null);
 	const onMeetingSelecteHandler = (idx) => {
 		setSelectedMeeting(searchResults[idx]);
-    };
-    
-    useEffect(() => {
-        return () => {
-            setSelectedMeeting(null)
-        }
-    }, [])
+	};
+
+	useEffect(() => {
+		return () => {
+			setSelectedMeeting(null);
+		};
+	}, []);
 
 	const searchResultsList = searchResults.map((result, idx) => {
 		return (
