@@ -11,6 +11,7 @@ export default function App(props) {
 	const [items, setItems] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
 	const dispatch = useDispatch();
+	let timeout = null;
 
 	const addSelectedItem = (idx) => {
 		onSelectItem(items[idx]);
@@ -24,7 +25,8 @@ export default function App(props) {
 
 	const onInputChangeHandler = (e) => {
 		setSearchInput(e.target.value);
-		setTimeout(async () => {
+		if (timeout) clearTimeout(timeout);
+		timeout = setTimeout(async () => {
 			try {
 				const _items = await getItems(e.target.value);
 				setItems(_items);

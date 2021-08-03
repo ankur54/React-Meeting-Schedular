@@ -1,14 +1,27 @@
 .button {
-    display: flex;
-    align-self: center;
-    justify-content: center;
-    gap: 0.5em;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-weight: 600;
+	display: flex;
+	align-self: center;
+	justify-content: center;
+	gap: 0.5rem;
+	align-items: center;
+	padding: 0.75rem 3rem;
+	font-family: "Montserrat", sans-serif;
+	font-size: 1.2em;
+	font-weight: 600;
+    letter-spacing: 0.2rem;
+	border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+.button:disabled,
+.button:disabled:hover,
+.button:disabled:active {
+	background-color: #ccc;
+	color: #292929;
+	border-color: #ccc;
+	cursor: not-allowed;
 }
 
 .button {
-    cursor: pointer;
+	cursor: pointer;
 }

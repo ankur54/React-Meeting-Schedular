@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import { v4 as uuidv4 } from "uuid";
 
 import AuthForm from "../../UI/Auth Form Container/AuthForm";
 import { authActions } from "../../store/AuthStore";
@@ -10,21 +11,12 @@ const AuthFormConfig = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-
-	const onLoginHandler = async (e) => {
+	const onLoginHandler = async (loginInfo) => {
 		try {
-			e.preventDefault();
-
 			// try to login user
 			let response = await fetch("http://localhost:8000/auth/login", {
 				method: "POST",
-				body: JSON.stringify({
-					email,
-					password,
-				}),
+				body: JSON.stringify({ ...loginInfo }),
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -48,7 +40,8 @@ const AuthFormConfig = () => {
 			dispatch(
 				notificationActions.setNotification({
 					title: "Logged In",
-					message: "You have successfully logged into your calendar space",
+					message:
+						"You have successfully logged into your calendar space",
 					type: "SUCCESS",
 				})
 			);
@@ -64,18 +57,12 @@ const AuthFormConfig = () => {
 			console.log(err.message);
 		}
 	};
-	const onSignupHandler = async (e) => {
+	const onSignupHandler = async (signupInfo) => {
 		try {
-			e.preventDefault();
-
 			// try to login user
 			const response = await fetch("http://localhost:8000/auth/signup", {
 				method: "POST",
-				body: JSON.stringify({
-					name,
-					email,
-					password,
-				}),
+				body: JSON.stringify({ ...signupInfo }),
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -105,14 +92,27 @@ const AuthFormConfig = () => {
 			console.log(err.message);
 		}
 	};
-	const onNameChange = (e) => {
-		setName(e.target.value);
+
+	const nameValidator = (name) => {
+		if (name === "") throw new Error("Name cannot be empty");
 	};
-	const onEmailChange = (e) => {
-		setEmail(e.target.value);
+
+	const emailValidator = (email) => {
+		if (email === "") throw new Error("Email not provided");
+		const re =
+			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if (!re.test(String(email).toLowerCase()))
+			throw new Error("Not a valid email!");
 	};
-	const onPasswordChange = (e) => {
-		setPassword(e.target.value);
+
+	const passwordStrengthValidator = (password) => {
+		passwordValidator(password);
+		var re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+		if (re.test(password)) throw new Error("Not a strong enough password");
+	};
+
+	const passwordValidator = (password) => {
+		if (password === "") throw new Error("Password is required");
 	};
 
 	const config = [
@@ -128,25 +128,32 @@ const AuthFormConfig = () => {
 				inputList: [
 					{
 						type: "email",
-						name: "userEmail",
+						name: "email",
 						placeholder: "Enter your email",
-						onChangeHandler: onEmailChange,
-						value: email,
-						required: true,
+						validator: emailValidator,
 					},
 					{
 						type: "password",
-						name: "userPassword",
+						name: "password",
 						placeholder: "Enter your password",
-						onChangeHandler: onPasswordChange,
-						value: password,
-						required: true,
+						validator: passwordValidator,
+					},
+				],
+				buttonList: [
+					{
+						key: uuidv4(),
+						// color: darkHyue,
+						family: "secondary",
+						type: "submit",
+						text: "Login",
+						// className: classes["form-submit"],
+						onClickHandler: onLoginHandler,
 					},
 				],
 			},
 			hyue: "#F1CCD9",
 			next: "Don't have an accout yet?",
-			submitHandler: onLoginHandler,
+			// submitHandler: onLoginHandler,
 		},
 		{
 			title: "Signup",
@@ -161,33 +168,38 @@ const AuthFormConfig = () => {
 				inputList: [
 					{
 						type: "text",
-						name: "userName",
+						name: "name",
 						placeholder: "Enter your name",
-						onChangeHandler: onNameChange,
-						value: name,
-						required: true,
+						validator: nameValidator,
 					},
 					{
 						type: "email",
-						name: "userEmail",
+						name: "email",
 						placeholder: "Enter your email",
-						onChangeHandler: onEmailChange,
-						value: email,
-						required: true,
+						validator: emailValidator,
 					},
 					{
 						type: "password",
-						name: "userPassword",
+						name: "password",
 						placeholder: "Enter a secure password",
-						onChangeHandler: onPasswordChange,
-						value: password,
-						required: true,
+						validator: passwordStrengthValidator,
+					},
+				],
+				buttonList: [
+					{
+						key: uuidv4(),
+						// color: darkHyue,
+						family: "secondary",
+						type: "submit",
+						text: "Signup",
+						// className: classes["form-submit"],
+						onClickHandler: onSignupHandler,
 					},
 				],
 			},
 			hyue: "#F4D38A",
 			next: "Already have an account?",
-			submitHandler: onSignupHandler,
+			// submitHandler: onSignupHandler,
 		},
 	];
 

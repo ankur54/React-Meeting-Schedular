@@ -39,7 +39,7 @@ const Header = (props) => {
 		try {
 			console.log(input);
 			const response = await fetch(
-				`http://localhost:3000/meeting/filter?phrase=${input}`,
+				`http://localhost:8000/meeting/filter?phrase=${input}`,
 				{
 					method: "GET",
 					headers: {

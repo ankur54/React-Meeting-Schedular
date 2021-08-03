@@ -32,7 +32,7 @@ const Modal = (props) => {
 	return ReactDOM.createPortal(
 		<ModalComponent
 			showModal={showModal}
-			level={level}
+			level={level * 2}
 			onToggleModal={onToggleModal}
 		>
 			{children}

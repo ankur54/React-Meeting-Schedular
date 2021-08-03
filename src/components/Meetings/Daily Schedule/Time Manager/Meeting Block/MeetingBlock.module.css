@@ -4,6 +4,7 @@
     width: 65%;
     border-left: 5px solid ;
     border-radius: 0.5em;
+    z-index: 2;
 }
 
 .meeting-range:hover {

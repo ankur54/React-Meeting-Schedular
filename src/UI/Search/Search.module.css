@@ -1,9 +1,10 @@
 .search-bar {
     width: 100%;
     display: flex;
+    flex-shrink: 0;
     gap: 0.75em;
     position: relative;
-    padding: 0.1em 0.1em 0.1em 0.75em;
+    /* padding: 0.1em 0.1em 0.1em 0.75em; */
     
     overflow: hidden;
     border-radius: 20px;
@@ -54,5 +55,5 @@
 }
 
 .search-bar__submit > * {
-    color: #666666;
+    color: #3a3a3a;
 }

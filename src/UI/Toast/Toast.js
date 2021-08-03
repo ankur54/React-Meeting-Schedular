@@ -22,7 +22,7 @@ const ToastElement = () => {
 		icon = <CheckCircle fontSize="large" />;
 	}
 	if (notification.type === "WARNING") {
-		color = "#B8A921";
+		color = "#EBD65F";
 		icon = <Warning fontSize="large" />;
 	}
 	if (notification.type === "DANGER") {
@@ -41,9 +41,9 @@ const ToastElement = () => {
 		>
 			{icon}
 			<div className={classes["notification-content"]}>
-				<h2 className={classes["notification-title"]}>
+				<h4 className={classes["notification-title"]}>
 					{notification.title}
-				</h2>
+				</h4>
 				<p className={classes["notification-message"]}>
 					{notification.message}
 				</p>

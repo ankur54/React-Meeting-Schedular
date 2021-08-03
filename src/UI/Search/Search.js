@@ -7,9 +7,11 @@ import { useState } from "react";
 const Search = (props) => {
 	const { onClickHandler } = props;
 	const [search, setSearch] = useState("");
+	let timeout = null;
 	const onInputChange = (e) => {
 		setSearch(e.target.value);
-		setTimeout(() => {
+		if (timeout) clearTimeout(timeout);
+		timeout = setTimeout(() => {
 			onClickHandler(e.target.value);
 		}, 1000);
 	};

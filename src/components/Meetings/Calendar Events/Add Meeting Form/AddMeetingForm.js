@@ -19,6 +19,68 @@ const AddMeetingForm = ({ displayForm }) => {
 	const [attendees, setAttendees] = useState([]);
 	const [attendeeModal, setAttendeeModal] = useState(false);
 
+	const [titleTouched, setTitleTouched] = useState(false);
+	const [descriptionTouched, setDescriptionTouched] = useState(false);
+	const [dateTouched, setDateTouched] = useState(false);
+	const [startTimeTouched, setStartTimeTouched] = useState(false);
+	const [endTimeTouched, setEndTimeTouched] = useState(false);
+
+	const titleValidator = (input) => {
+		if (input === "") throw new Error("Title cannot be empty");
+	};
+	const descriptionValidator = (input) => {
+		if (input === "") throw new Error("Description cannot be empty");
+	};
+	const dateValidator = (input) => {
+		if (input === "") throw new Error("Input cannot be empty");
+		let [year, month, day] = input.split("-");
+		day = +day;
+		month = +month;
+		year = +year;
+		const currDate = new Date().getDate();
+		const currMonth = new Date().getMonth() + 1;
+		const currYear = new Date().getFullYear();
+		if (year < currYear || month < currMonth || day < currDate)
+			throw new Error(
+				"Meetings are allowed to be scheduled only in future"
+			);
+	};
+	const startTimeValidator = (input, dateString) => {
+		if (input === "") throw new Error("Input cannot be empty");
+		let [hr, min] = input.split(":");
+		let [year, month, day] = dateString.split("-");
+		day = +day;
+		month = +month;
+		year = +year;
+		hr = +hr;
+		min = +min;
+		const currDate = new Date().getDate();
+		const currMonth = new Date().getMonth() + 1;
+		const currYear = new Date().getFullYear();
+		const currHr = new Date().getHours();
+		const currMin = new Date().getMinutes();
+		if (
+			day === currDate &&
+			month === currMonth &&
+			currYear === year &&
+			(currHr > hr || currMin > min)
+		)
+			throw new Error(
+				"Start Time should atleast be curr Time for the current date"
+			);
+	};
+	const endTimeValidator = (input, startTimeString) => {
+		if (input === "") throw new Error("Input cannot be empty");
+		let [hr, min] = input.split(":");
+		let [startHr, startMin] = startTime.split(":");
+		hr = +hr;
+		min = +min;
+		startHr = +startHr;
+		startMin = +startMin;
+		if (hr < startHr || (hr === startHr && min < startMin))
+			throw new Error("End Time should be greater than start time");
+	};
+
 	const token = useSelector((state) => state.authentication.token);
 	const dispatch = useDispatch();
 
@@ -34,6 +96,82 @@ const AddMeetingForm = ({ displayForm }) => {
 	const onChangeDate = (e) => setDate(e.target.value);
 	const onChangeStartTime = (e) => setStartTime(e.target.value);
 	const onChangeEndTime = (e) => setEndTime(e.target.value);
+
+	const onTitleTouched = (e) => setTitleTouched(true);
+	const onDescriptionTouched = (e) => setDescriptionTouched(true);
+	const onDateTouched = (e) => setDateTouched(true);
+	const onStartTimeTouched = (e) => setStartTimeTouched(true);
+	const onEndTimeTouched = (e) => setEndTimeTouched(true);
+
+	let titleIsValidMessage = null;
+	let descriptionIsValidMessage = null;
+	let dateIsValidMessage = null;
+	let startTimeIsValidMessage = null;
+	let endTimeIsValidMessage = null;
+
+	let isTitleValid = false;
+	let isDateValid = false;
+	let isStartTimeValid = false;
+	let isEndTimeValid = false;
+	let isDescriptionValid = false;
+
+	try {
+		if (titleTouched) {
+			titleValidator(title);
+			isTitleValid = true;
+		}
+	} catch (err) {
+		titleIsValidMessage = err.message;
+		isTitleValid = false;
+	}
+
+	try {
+		if (descriptionTouched) {
+			descriptionValidator(description);
+			isDescriptionValid = true;
+		}
+	} catch (err) {
+		descriptionIsValidMessage = err.message;
+		isDescriptionValid = false;
+	}
+
+	try {
+		if (dateTouched) {
+			dateValidator(date);
+			isDateValid = true;
+		}
+	} catch (err) {
+		dateIsValidMessage = err.message;
+		isDateValid = false;
+	}
+
+	try {
+		if (startTimeTouched) {
+			startTimeValidator(startTime, date);
+			isStartTimeValid = true;
+		}
+	} catch (err) {
+		startTimeIsValidMessage = err.message;
+		isStartTimeValid = false;
+	}
+
+	try {
+		if (endTimeTouched) {
+			endTimeValidator(endTime, date);
+			isEndTimeValid = true;
+		}
+	} catch (err) {
+		endTimeIsValidMessage = err.message;
+		isEndTimeValid = false;
+	}
+
+	let isFormValid =
+		isTitleValid &&
+		isDateValid &&
+		isStartTimeValid &&
+		isEndTimeValid &&
+		isDescriptionValid;
+
 	const onToggleModal = (e) => {
 		e.preventDefault();
 		setAttendeeModal((prev) => !prev);
@@ -135,7 +273,11 @@ const AddMeetingForm = ({ displayForm }) => {
 	return (
 		render && (
 			<Fragment>
-				<Modal showModal={attendeeModal} onToggleModal={onToggleModal}>
+				<Modal
+					level={2}
+					showModal={attendeeModal}
+					onToggleModal={onToggleModal}
+				>
 					<MultiSelect
 						getItems={getItemsHandler}
 						selectedItems={attendees}
@@ -162,58 +304,88 @@ const AddMeetingForm = ({ displayForm }) => {
 				>
 					<input
 						onChange={onChangeTitle}
+						onBlur={onTitleTouched}
 						type="text"
 						name="meeting-title"
+						className={!!titleIsValidMessage && classes.invalid}
 						id={classes["create-meeting-title"]}
 						required
 						placeholder="Enter meeting title"
 						value={title}
 					/>
+					<p className={classes["input-error-message"]}>
+						{titleIsValidMessage}
+					</p>
 					<div className={classes["meeting-date-container"]}>
 						<label>Select meeting date</label>
 						<input
 							onChange={onChangeDate}
+							onBlur={onDateTouched}
 							type="date"
 							name="meeting-date"
+							className={!!dateIsValidMessage && classes.invalid}
 							id={classes["create-meeting-date"]}
 							value={date}
 							min={currDate}
 						/>
+						<p className={classes["input-error-message"]}>
+							{dateIsValidMessage}
+						</p>
 					</div>
 					<div className={classes["start-time-container"]}>
 						<label>Start Time</label>
 						<input
 							onChange={onChangeStartTime}
+							onBlur={onStartTimeTouched}
 							type="time"
 							name="meeting-start-time"
+							className={
+								!!startTimeIsValidMessage && classes.invalid
+							}
 							id={classes["create-meeting-start-time"]}
 							value={startTime}
 							min={currTime}
 						/>
+						<p className={classes["input-error-message"]}>
+							{startTimeIsValidMessage}
+						</p>
 					</div>
 					<div className={classes["end-time-container"]}>
 						<label>End Time</label>
 						<input
 							onChange={onChangeEndTime}
+							onBlur={onEndTimeTouched}
+							className={
+								!!endTimeIsValidMessage && classes.invalid
+							}
 							type="time"
 							name="meeting-end-time"
 							id={classes["create-meeting-end-time"]}
 							value={endTime}
 							min={startTime}
 						/>
+						<p className={classes["input-error-message"]}>
+							{endTimeIsValidMessage}
+						</p>
 					</div>
 					<input
 						onChange={onChangeDescription}
+						onBlur={onDescriptionTouched}
 						type="text"
 						name="meeting-description"
+						className={
+							!!descriptionIsValidMessage && classes.invalid
+						}
 						id={classes["create-meeting-description"]}
 						placeholder="What the meeting is about?"
 						value={description}
 					/>
+					<p className={classes["input-error-message"]}>
+						{descriptionIsValidMessage}
+					</p>
 
 					<div className={classes["btn-grp"]}>
 						<Button
-							type="none"
 							family="primary"
 							color="#548385"
 							onClickHandler={onToggleModal}
@@ -225,6 +397,7 @@ const AddMeetingForm = ({ displayForm }) => {
 							type="submit"
 							family="secondary"
 							color="#548385"
+							disabled={!isFormValid}
 							onClickHandler={onSubmitFormHandler}
 						>
 							<VideoCall fontSize="medium" />

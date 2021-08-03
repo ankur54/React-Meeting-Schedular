@@ -1,12 +1,21 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import classes from "./MeetingBlock.module.css";
+import { meetingActions } from "../../../../../store/MeetingStore";
+
 
 const MeetingBlock = (props) => {
-	const { meetings, onEventClick } = props;
+	const { meetings } = props;
 	const userEmail = useSelector((state) => state.authentication.userEmail);
+	const dispatch = useDispatch()
 
+	
 	const meetingsList = meetings.map((meeting) => {
 		const { _id, startTime, endTime } = meeting;
+		const onEventClick = (e) => {
+			e.stopPropagation()
+			dispatch(meetingActions.setMeeting(_id));
+		};
 		const durationInMinutes = (() => {
 			const [startHr, startMin] = startTime.split(":");
 			const [endHr, endMin] = endTime.split(":");
@@ -43,7 +52,7 @@ const MeetingBlock = (props) => {
 					backgroundColor: backgroundColor,
 					borderLeftColor: borderColor,
 				}}
-				onClick={onEventClick.bind(this, _id)}
+				onClick={onEventClick}
 			></div>
 		);
 	});

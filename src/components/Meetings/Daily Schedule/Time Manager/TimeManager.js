@@ -3,10 +3,9 @@ import classes from "./TimeManager.module.css";
 import TimeBlock from "./Time Block/TimeBlock";
 import CurrentTimeIndicator from "./Current Time Indicator/CurrentTimeIndicator";
 import MeetingBlock from "./Meeting Block/MeetingBlock";
-import { meetingActions } from "../../../../store/MeetingStore";
 import { applicationActions } from "../../../../store/AppStore";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 const TimeManager = (props) => {
@@ -35,10 +34,6 @@ const TimeManager = (props) => {
 		};
 	}, []);
 
-	const onEventClick = (meetingId) => {
-		dispatch(meetingActions.setMeeting(meetingId));
-	};
-
 	const getCurrTimer = (hour) => {
 		return currHr === hour && <CurrentTimeIndicator currHour={hour} />;
 	};
@@ -56,10 +51,7 @@ const TimeManager = (props) => {
 		return (
 			<TimeBlock key={`${hour}:00`} startTime={hour}>
 				{getCurrTimer(hour)}
-				<MeetingBlock
-					meetings={meetingList}
-					onEventClick={onEventClick}
-				/>
+				<MeetingBlock meetings={meetingList} />
 			</TimeBlock>
 		);
 	});

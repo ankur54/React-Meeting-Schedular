@@ -2,10 +2,6 @@ form.create-meeting {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    
-    /* position: absolute;
-    top: 3em;
-    transition: transform 250ms ease-in-out 1s; */
     padding: 3em 2em;
     font-family: 'Roboto', sans-serif;
 }
@@ -35,6 +31,11 @@ form.create-meeting >
     input:focus,
     select:focus {
     outline: none;
+}
+
+.input-error-message {
+    color: indianred;
+    margin-bottom: 1em;
 }
 
 #create-meeting-title,
@@ -68,6 +69,25 @@ form.create-meeting >
 
 #select-attendee {
     flex-basis: 70%;
+}
+
+#create-meeting-title,
+#create-meeting-description,
+#create-meeting-date,
+#create-meeting-start-time,
+#create-meeting-end-time {
+    padding: 0.25em 1em;
+    border-radius: 5px;
+}
+
+#create-meeting-title.invalid,
+#create-meeting-description.invalid,
+#create-meeting-date.invalid,
+#create-meeting-start-time.invalid,
+#create-meeting-end-time.invalid {
+    background-color: rgba(205, 92, 92, 0.466);
+    color: indianred;
+    border-bottom: 2px solid indianred;
 }
 
 .btn-grp {
