@@ -32,19 +32,28 @@ p::before {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5em;
+	letter-spacing: 4px;
+	font-weight: 300;
 }
 
 .event-header__title {
-	color: #8d896a;
-	letter-spacing: 4px;
+	color: #5a5a5a;
 	font-size: 2.5em;
 	line-height: 3rem;
+	word-spacing: 10px;
 	font-family: "Playfair Display", serif;
+}
+
+.event-header__date {
+	color: rgba(0, 0, 0, 0.3);
+	font-size: 1.5em;
 }
 
 .event-header__time {
 	display: flex;
 	gap: 0.5em;
+	color: rgba(0, 0, 0, 0.5);
+	font-weight: 500;
 }
 
 .event-scrollable-section {
@@ -60,6 +69,13 @@ p::before {
 
 .event-scrollable-section > p {
 	flex-shrink: 0;
+}
+
+.event-description {
+	color: rgba(0, 0, 0, 0.5);
+	line-height: 1.4rem;
+	font-family: 'Roboto', sans-serif;
+	word-spacing: 5px;
 }
 
 .event-description::before,
@@ -80,10 +96,6 @@ p::before {
 	bottom: -1em;
 }
 
-.event-description {
-	font-family: "Roboto", sans-serif;
-}
-
 .event-attendees {
 	font-family: "Montserrat", sans-serif;
 	font-weight: 600;
@@ -93,12 +105,16 @@ p::before {
 	display: flex;
 	gap: 1em;
 	padding: 0.5em 0;
-	color: #8559698e;
+	color: #43628ba9;
 }
 
 .btn-grp {
 	display: flex;
 	justify-content: space-evenly;
+	gap: 1em;
+}
+
+.edit-btn {
 	gap: 1em;
 }
 

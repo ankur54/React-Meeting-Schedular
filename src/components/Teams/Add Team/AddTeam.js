@@ -3,7 +3,7 @@ import Button from "../../../UI/Button/Button";
 import MemberAddModal from "../../../utils/Member Modal Helper/MemberModal";
 import { notificationActions } from "../../../store/NotificationStore";
 
-import { GroupAdd, PersonAdd, ThumbUp } from "@material-ui/icons";
+import { GroupAdd, PersonAdd } from "@material-ui/icons";
 import { useState, useRef, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -121,19 +121,6 @@ const AddTeam = (props) => {
 					rows="1"
 					placeholder="What the team is about?"
 				></textarea>
-				{/* <select name="select-team-member" id={classes['select-team-member']}>
-                            <option>Choose an member</option>
-                            <option value="user.name@mail.domain">member 1</option>
-                            <option value="user.name@mail.domain">member 2</option>
-                            <option value="user.name@mail.domain">member 3</option>
-                            <option value="user.name@mail.domain">member 4</option>
-                            <option value="user.name@mail.domain">member 5</option>
-                            <option value="user.name@mail.domain">member 6</option>
-                            <option value="user.name@mail.domain">member 7</option>
-                            <option value="user.name@mail.domain">member 8</option>
-                            <option value="user.name@mail.domain">member 9</option>
-                            <option value="user.name@mail.domain">member 10</option>
-                        </select> */}
 				<div className={classes["btn-grp"]}>
 					<Button
 						color="#548385"

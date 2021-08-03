@@ -8,7 +8,8 @@ import Meetings from "./components/Meetings/Meetings";
 import Teams from "./components/Teams/Teams";
 import Toast from "./UI/Toast/Toast";
 
-import AuthFormConfig from "./utils/Auth Form/AuthForm";
+import useAuthFormConfig from "./hook/use-AuthForm";
+import AuthForm from "./UI/Auth Form Container/AuthForm";
 import { authActions } from "./store/AuthStore";
 
 function App() {
@@ -21,6 +22,8 @@ function App() {
 	const showNotification = useSelector((state) => state.notification.show);
 	const dispatch = useDispatch();
 	const isAuthenticated = !!token;
+
+	const config = useAuthFormConfig();
 
 	// logout timer
 	useEffect(() => {
@@ -81,12 +84,12 @@ function App() {
 			{showNotification && <Toast />}
 			<Switch>
 				<Route path="/auth">
-					<AuthFormConfig />
+					<AuthForm sections={config} />
 				</Route>
 				{isAuthenticated && <Route path="/">{mainPage}</Route>}
 				{!isAuthenticated && (
 					<Route path="*">
-						<AuthFormConfig />
+						<AuthForm sections={config} />
 					</Route>
 				)}
 				{isAuthenticated && <Route path="*">{mainPage}</Route>}

@@ -320,8 +320,10 @@ const EventDetails = () => {
 			<div className={classes["btn-grp"]}>
 				<Button
 					type="none"
-					family="primary"
-					color="#548385"
+					family="secondary"
+					primaryColor="#548385"
+					secondaryColor="#B1B1B1"
+					className={classes["edit-btn"]}
 					onClickHandler={onToggleModal}
 				>
 					<PersonAdd fontSize="medium" />
@@ -330,7 +332,9 @@ const EventDetails = () => {
 				<Button
 					type="none"
 					family="secondary"
-					color="indianred"
+					primaryColor="indianred"
+					secondaryColor="#B1B1B1"
+					className={classes["edit-btn"]}
 					onClickHandler={removeSelfHandler}
 				>
 					<RemoveCircle fontSize="medium" />
@@ -352,7 +356,8 @@ const EventDetails = () => {
 					/>
 					<Button
 						type="secondary"
-						color="#7B6F14"
+						primaryColor="#7B6F14"
+						secondary="transparent"
 						onClickHandler={addNewAttendees}
 					>
 						<ThumbUp />

@@ -1,23 +1,14 @@
 import { Fragment, useState } from "react";
 
 import classes from "./AuthForm.module.css";
-import Input from "../Form/Input/Input";
-import Toast from "../Toast/Toast";
 import Form from "../Form/Form";
 
 const AuthForm = (props) => {
 	const [active, setActive] = useState(0);
-	const [hover, setHover] = useState(false);
 	const { sections } = props;
 
 	const onTabClickHandler = (idx) => {
 		setActive(idx);
-	};
-	const onMouseEnterHandler = () => {
-		setHover(true);
-	};
-	const onMouseLeaveHandler = () => {
-		setHover(false);
 	};
 
 	const LightenDarkenColor = (col, amt) => {
@@ -73,37 +64,15 @@ const AuthForm = (props) => {
 		);
 	});
 	const pages = sections.map((page) => {
-		// const form = page.left.inputList.map((input) => (
-		// 	<fieldset
-		// 		key={`${page.title}-${input.name}`}
-		// 		className={classes["auth-fieldset"]}
-		// 	>
-		// 		<label htmlFor={input.name}>{input.label}</label>
-		// 		<Input
-		// 			type={input.type}
-		// 			name={input.name}
-		// 			id={input.name}
-		// 			classes={{
-		// 				normal: classes["auth-form-input"],
-		// 				invalid: classes["invalid"]
-		// 			}}
-		// 			validator={input.validator}
-		// 			placeholder={input.placeholder}
-		// 		/>
-		// 	</fieldset>
-		// ));
-
 		const darkHyue = LightenDarkenColor(page.hyue, -150);
-		const lightHyue = LightenDarkenColor(page.hyue, 30);
 
-        const buttonList = page.left.buttonList.map(btn => {
-            return {
-                ...btn,
-                color: darkHyue,
-                classes: classes["form-submit"]
-            }
-        })
-		
+		const buttonList = page.left.buttonList.map((btn) => {
+			return {
+				...btn,
+				color: darkHyue,
+				classes: classes["form-submit"],
+			};
+		});
 
 		const form = (
 			<Form
@@ -129,27 +98,6 @@ const AuthForm = (props) => {
 						className={classes["hor-divider"]}
 						style={{ backgroundColor: darkHyue }}
 					></div>
-					{/* <form
-						className={classes["auth-form"]}
-						action=""
-						method="POST"
-					>
-						{form}
-						<button
-							type="submit"
-							style={{
-								backgroundColor: !hover && darkHyue,
-								color: hover ? darkHyue : lightHyue,
-								border: `2px solid ${darkHyue}`,
-							}}
-							onMouseEnter={onMouseEnterHandler}
-							onMouseLeave={onMouseLeaveHandler}
-							onClick={page.submitHandler}
-							className={classes["form-submit"]}
-						>
-							{page.title}
-						</button>
-					</form> */}
 					{form}
 				</div>
 				<div

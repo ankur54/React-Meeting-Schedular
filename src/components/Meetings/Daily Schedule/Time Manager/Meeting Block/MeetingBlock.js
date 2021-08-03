@@ -3,17 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import classes from "./MeetingBlock.module.css";
 import { meetingActions } from "../../../../../store/MeetingStore";
 
-
 const MeetingBlock = (props) => {
 	const { meetings } = props;
 	const userEmail = useSelector((state) => state.authentication.userEmail);
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 
-	
 	const meetingsList = meetings.map((meeting) => {
-		const { _id, startTime, endTime } = meeting;
+		const { _id, title, startTime, endTime } = meeting;
 		const onEventClick = (e) => {
-			e.stopPropagation()
+			e.stopPropagation();
 			dispatch(meetingActions.setMeeting(_id));
 		};
 		const durationInMinutes = (() => {
@@ -53,7 +51,21 @@ const MeetingBlock = (props) => {
 					borderLeftColor: borderColor,
 				}}
 				onClick={onEventClick}
-			></div>
+			>
+				<h4
+					className={classes['meeting-title']}
+					style={{ color: borderColor }}
+				>{title}
+				</h4>
+				{/* <svg
+					className={classes["meeting-title"]}
+					style={{ fill: borderColor }}
+				>
+					<text x="10" y="20">
+						{title}
+					</text>
+				</svg> */}
+			</div>
 		);
 	});
 

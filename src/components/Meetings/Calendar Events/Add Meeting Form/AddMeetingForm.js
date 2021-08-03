@@ -286,7 +286,7 @@ const AddMeetingForm = ({ displayForm }) => {
 					/>
 					<Button
 						type="secondary"
-						color="#7B6F14"
+						primaryColor="#7B6F14"
 						onClickHandler={onToggleModal}
 					>
 						<ThumbUp />
@@ -387,7 +387,9 @@ const AddMeetingForm = ({ displayForm }) => {
 					<div className={classes["btn-grp"]}>
 						<Button
 							family="primary"
-							color="#548385"
+							primaryColor="#548385"
+							secondaryColor="#B1B1B1"
+							className={classes["add-meet-btn"]}
 							onClickHandler={onToggleModal}
 						>
 							<PersonAdd fontSize="medium" />
@@ -396,8 +398,10 @@ const AddMeetingForm = ({ displayForm }) => {
 						<Button
 							type="submit"
 							family="secondary"
-							color="#548385"
+							primaryColor="#548385"
+							secondaryColor="#B1B1B1"
 							disabled={!isFormValid}
+							className={classes["add-meet-btn"]}
 							onClickHandler={onSubmitFormHandler}
 						>
 							<VideoCall fontSize="medium" />

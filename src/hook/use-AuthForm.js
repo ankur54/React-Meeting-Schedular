@@ -3,11 +3,11 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 
-import AuthForm from "../../UI/Auth Form Container/AuthForm";
-import { authActions } from "../../store/AuthStore";
-import { notificationActions } from "../../store/NotificationStore";
+import AuthForm from "../UI/Auth Form Container/AuthForm";
+import { authActions } from "../store/AuthStore";
+import { notificationActions } from "../store/NotificationStore";
 
-const AuthFormConfig = () => {
+const useAuthFormConfig = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 
@@ -142,18 +142,15 @@ const AuthFormConfig = () => {
 				buttonList: [
 					{
 						key: uuidv4(),
-						// color: darkHyue,
 						family: "secondary",
 						type: "submit",
 						text: "Login",
-						// className: classes["form-submit"],
 						onClickHandler: onLoginHandler,
 					},
 				],
 			},
 			hyue: "#F1CCD9",
 			next: "Don't have an accout yet?",
-			// submitHandler: onLoginHandler,
 		},
 		{
 			title: "Signup",
@@ -188,22 +185,19 @@ const AuthFormConfig = () => {
 				buttonList: [
 					{
 						key: uuidv4(),
-						// color: darkHyue,
 						family: "secondary",
 						type: "submit",
 						text: "Signup",
-						// className: classes["form-submit"],
 						onClickHandler: onSignupHandler,
 					},
 				],
 			},
 			hyue: "#F4D38A",
 			next: "Already have an account?",
-			// submitHandler: onSignupHandler,
 		},
 	];
 
-	return <AuthForm sections={config} />;
+	return config
 };
 
-export default AuthFormConfig;
+export default useAuthFormConfig;

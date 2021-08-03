@@ -1,117 +1,117 @@
 input,
 button {
-    border: none;
-    outline: none;
+	border: none;
+	outline: none;
 }
 
 .auth-fieldset {
-    border: none
+	border: none;
 }
 
 .auth-form-input {
-    width: 100%;
-    padding: 0.6em;
-    font-size: 1.25em;
-    border-radius: 0.5em;
-    background-color: #f3f3f3;
+	width: 100%;
+	padding: 0.6em;
+	font-size: 1.25em;
+	border-radius: 0.5em;
+	background-color: #f3f3f3;
 }
 
 .auth-form-input.invalid {
-    background-color: rgba(205, 92, 92, 0.5);
-    color: indianred;
-    border: 2px solid indianred;
+	background-color: rgba(205, 92, 92, 0.5);
+	color: indianred;
+	border: 2px solid indianred;
 }
 
 .auth-form-input::placeholder {
-    opacity: 0.5;
+	opacity: 0.5;
 }
 
 .auth-form-input:focus {
-    border: 2px solid #dfdfdf;
-    box-shadow: 0 0 0.5em #67b67e5b;
+	border: 2px solid #dfdfdf;
+	box-shadow: 0 0 0.5em #67b67e5b;
 }
 
 .hor-divider {
-    height: 2px;
-    width: 80%;
-    align-self: center;
-    opacity: 0.25;
+	height: 2px;
+	width: 80%;
+	align-self: center;
+	opacity: 0.25;
 }
 
 .auth-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1em;
-    
-    width: 100%;
-    margin-left: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 1em;
+
+	width: 100%;
+	margin-left: auto;
 }
 
 .form-submit {
-    padding: 0.5em 4em;
-    margin-top: 2em;
-    align-self: flex-start;
+	padding: 0.5em 4em;
+	margin-top: 2em;
+	align-self: flex-start;
 
-    background-color: transparent;
-    border-radius: 0.5em;
-    font-size: 1.25em;
-    font-weight: 600;
-    font-family: 'Montserrat', sans-serif;
+	background-color: transparent;
+	border-radius: 0.5em;
+	font-size: 1.25em;
+	font-weight: 600;
+	font-family: "Montserrat", sans-serif;
 }
 
 .form-submit:hover {
-    cursor: pointer;
-    border: none;
+	cursor: pointer;
+	border: none;
 }
 
 .form-image {
-    width: 100%;
+	width: 100%;
 }
 
 .form-image > img {
-    width: 100%;
+	width: 100%;
 }
 
 .form-tab {
-    position: absolute;
-    padding: 2em 3em;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 900;
-    cursor: pointer;
+	position: absolute;
+	padding: 2em 3em;
+	font-family: "Roboto", sans-serif;
+	font-weight: 900;
+	cursor: pointer;
 }
 
 .form-tab__link:hover {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .form-content {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    margin: 0 auto;
-    height: 100vh;
-    box-shadow: 0 0.5em 1.5em rgba(0, 0, 0, 0.3);
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	margin: 0 auto;
+	height: 100vh;
+	box-shadow: 0 0.5em 1.5em rgba(0, 0, 0, 0.3);
 }
 
 .left-panel {
-    flex-basis: 70%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 7em;
-    gap: 2em;
-    background-color: white;
+	flex-basis: 70%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 0 7em;
+	gap: 5em;
+	background-color: white;
 }
 
 .right-panel {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
 }
 
 .right-panel__header {
-    padding: 5em;
-    font-size: 0.9em;
+	padding: 5em;
+	font-size: 0.9em;
 }

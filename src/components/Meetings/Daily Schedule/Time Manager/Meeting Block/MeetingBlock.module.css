@@ -12,7 +12,9 @@
 }
 
 .meeting-title {
-    padding: 1% 3%;
+    padding: 3% 5%;
+    letter-spacing: 0.1rem;
+    font-family: 'Roboto', sans-serif;
 }
 
 .meeting-range > *::after, *::before {

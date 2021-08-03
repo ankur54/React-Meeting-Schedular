@@ -38,6 +38,16 @@ form.create-meeting >
     margin-bottom: 1em;
 }
 
+.btn-grp {
+    display: flex;
+    gap: 1em;
+}
+
+.add-meet-btn {
+    padding: 0.75em 1em;
+    gap: 1em;
+}
+
 #create-meeting-title,
 #create-meeting-description {
     flex-basis: 90%;
@@ -90,10 +100,6 @@ form.create-meeting >
     border-bottom: 2px solid indianred;
 }
 
-.btn-grp {
-    display: flex;
-    gap: 1em;
-}
 
 @keyframes dropdown {
     0% {
